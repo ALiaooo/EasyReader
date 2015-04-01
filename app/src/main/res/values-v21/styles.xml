@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/background_material_light</item>
+        <!--toolbar颜色-->
+        <item name="android:colorPrimary">#4876FF</item>
+        <!--状态栏颜色-->
+        <item name="android:colorPrimaryDark">#3A5FCD</item>
+    </style>
+</resources>
