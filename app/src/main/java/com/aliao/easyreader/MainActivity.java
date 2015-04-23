@@ -6,6 +6,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * List<Answer> answerList;
+ * record answerId
+ */
 public class MainActivity extends ActionBarActivity {
 
     @Override
