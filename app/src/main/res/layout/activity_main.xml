@@ -9,11 +9,18 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:background="#2196F3"
+        android:layout_marginBottom="10dp"
         >
 
     </android.support.v7.widget.Toolbar>
 
-
-
+    <Button
+        android:id="@+id/btn_get_new_surveys"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取新问卷"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/tb_main_topbar"
+        />
 
 </RelativeLayout>

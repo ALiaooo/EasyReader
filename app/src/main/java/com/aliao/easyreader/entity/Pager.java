@@ -17,4 +17,9 @@ public class Pager {
     private int iTypeID;//问卷类别id
     private String sTypeName;//问卷类别名称
     private String sCompanyName;//服务企业
+    private String dUpdateTime;
+
+    public String getTitle() {
+        return sTitle;
+    }
 }

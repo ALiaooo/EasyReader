@@ -10,4 +10,7 @@ public class SurveyResult {
    private String errorMessage;
    private List<Surveys> surveys;
 
+    public List<Surveys> getSurveys() {
+        return surveys;
+    }
 }

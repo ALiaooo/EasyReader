@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile project(':volley-master')
     compile files('libs/litepal-1.2.0-src.jar')
+    compile 'com.google.code.gson:gson:2.3.1'
 }

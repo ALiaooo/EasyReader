@@ -1,16 +1,20 @@
 package com.aliao.easyreader;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.aliao.easyreader.activity.NewSurveysActivity;
 
 /**
  * List<Answer> answerList;
  * record answerId
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +25,14 @@ public class MainActivity extends ActionBarActivity {
         toolbar.setLogo(R.mipmap.ic_launcher);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(android.R.drawable.arrow_up_float);
+
+        initViews();
+
     }
 
+    private void initViews() {
+        findViewById(R.id.btn_get_new_surveys).setOnClickListener(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,5 +54,14 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_get_new_surveys:
+                startActivity(new Intent(MainActivity.this, NewSurveysActivity.class));
+                break;
+        }
     }
 }

@@ -10,5 +10,11 @@ public class Surveys {
     private List<Catalogs> catalogs;
     private List<Question> questions;
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
 
+    public List<Catalogs> getCatalogs() {
+        return catalogs;
+    }
 }

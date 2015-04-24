@@ -22,4 +22,11 @@ public class Answer {
     private String bISOther;//是否是开放选项（true的情况下，该选项后面有文本框让用户自己填写）
     private List<Score> scorings;//多选打分题下的打分
 
+    public String getOptionTitle() {
+        return sOptionTitle;
+    }
+
+    public String getiID() {
+        return iID;
+    }
 }

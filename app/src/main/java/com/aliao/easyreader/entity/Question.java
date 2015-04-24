@@ -1,11 +1,13 @@
 package com.aliao.easyreader.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by 丽双 on 2015/4/23.
  */
-public class Question {
+public class Question implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String iID;//问题所在问卷中的id
     private String QNum;//问题序号-页面上提示的Q2
     private String questionType;//问题类型
@@ -28,4 +30,25 @@ public class Question {
 //    private boolean questionRequested;//是否必答 枚举类型？enum
 //    private String qIndex;//问题序号 eg: Q1，Q2
 //    private String qImgUrl;//问题图片url
+
+
+    public String getQuestionTilte() {
+        return sQuestionTilte;
+    }
+
+    public String getQNum() {
+        return QNum;
+    }
+
+    public String getCategoryText() {
+        return sCategoryText;
+    }
+
+    public List<Answer> getOptions() {
+        return options;
+    }
+
+    public List<Logic> getLogics() {
+        return logics;
+    }
 }
