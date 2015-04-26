@@ -8,6 +8,7 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/background_material_light</item>
         <item name="android:textColorPrimary">#FFFFFF</item>
+
     </style>
 
 </resources>

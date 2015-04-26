@@ -4,8 +4,12 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/background_material_light</item>
         <!--toolbar颜色-->
-        <item name="android:colorPrimary">#4876FF</item>
+        <!--<item name="android:colorPrimary">#4876FF</item>-->
+        <item name="android:colorPrimary">@color/style_color_primary</item>
         <!--状态栏颜色-->
-        <item name="android:colorPrimaryDark">#3A5FCD</item>
+        <!--<item name="android:colorPrimaryDark">#3A5FCD</item>-->
+        <item name="android:colorPrimaryDark">@color/style_color_primary_dark</item>
+
+        <item name="android:colorAccent">@color/style_color_accent</item>
     </style>
 </resources>

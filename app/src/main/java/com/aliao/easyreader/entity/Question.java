@@ -1,12 +1,14 @@
 package com.aliao.easyreader.entity;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by 丽双 on 2015/4/23.
  */
-public class Question implements Serializable {
+public class Question extends DataSupport implements Serializable {
     private static final long serialVersionUID = 1L;
     private String iID;//问题所在问卷中的id
     private String QNum;//问题序号-页面上提示的Q2
@@ -50,5 +52,21 @@ public class Question implements Serializable {
 
     public List<Logic> getLogics() {
         return logics;
+    }
+
+    public String getbISMust() {
+        return bISMust;
+    }
+
+    public String getiCatalogID() {
+        return iCatalogID;
+    }
+
+    public String getiScore() {
+        return iScore;
+    }
+
+    public void setQuestionTilte(String sQuestionTilte) {
+        this.sQuestionTilte = sQuestionTilte;
     }
 }

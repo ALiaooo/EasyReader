@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import com.aliao.easyreader.R;
@@ -30,7 +31,7 @@ public class AnswerOptionsAdapter extends BaseListAdapter<Answer> {
         if (null == convertView){
             holder = new ViewHolder();
             convertView = LayoutInflater.from(mCtx).inflate(R.layout.listitem_answer_option, parent, false);
-            holder.title = (TextView) convertView.findViewById(R.id.tv_item_answer_option_title);
+            holder.title = (CheckedTextView) convertView.findViewById(R.id.ctv_item_answer_option_title);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -44,7 +45,7 @@ public class AnswerOptionsAdapter extends BaseListAdapter<Answer> {
     }
 
     class ViewHolder{
-        private TextView title;
+        private CheckedTextView title;
     }
 
 }

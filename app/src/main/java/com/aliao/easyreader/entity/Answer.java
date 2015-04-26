@@ -1,11 +1,14 @@
 package com.aliao.easyreader.entity;
 
+import org.litepal.crud.DataSupport;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by 丽双 on 2015/4/23.
  */
-public class Answer {
+public class Answer extends DataSupport implements Serializable {
 //    private String anserId;//答案id
 //    private String answerTitle;//答案内容
 //    private boolean isSelected;//是否被选择
@@ -21,6 +24,7 @@ public class Answer {
     private String iSort;//选项排序
     private String bISOther;//是否是开放选项（true的情况下，该选项后面有文本框让用户自己填写）
     private List<Score> scorings;//多选打分题下的打分
+    private Question question;//在Answer中声明了一个Question的实例，这样表示Question中可以包含多个answer，而Answer中只能对应一个Question，即多对一关系
 
     public String getOptionTitle() {
         return sOptionTitle;

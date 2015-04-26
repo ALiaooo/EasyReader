@@ -17,6 +17,7 @@ import com.aliao.easyreader.entity.Answer;
 import com.aliao.easyreader.entity.Logic;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.utils.Contents;
+import com.aliao.easyreader.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,10 +76,14 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
         mAdapter = new AnswerOptionsAdapter(getActivity(), mAnswerOptionList);
         mLvAnswerOption.setAdapter(mAdapter);
         mLvAnswerOption.setOnItemClickListener(this);
+
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        L.d("onItemClick-postion = "+mLvAnswerOption.getCheckedItemPosition());
+
         String answerOptionId = mAnswerOptionList.get(position).getiID();
 
         Logic logic = null;
