@@ -1,5 +1,7 @@
 package com.aliao.easyreader.entity;
 
+import com.aliao.easyreader.utils.L;
+
 import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
@@ -62,11 +64,149 @@ public class Question extends DataSupport implements Serializable {
         return iCatalogID;
     }
 
+    public void setsQuestionTilte(String sQuestionTilte) {
+        this.sQuestionTilte = sQuestionTilte;
+    }
+
     public String getiScore() {
+
         return iScore;
+    }
+
+    public void setiID(String iID) {
+        this.iID = iID;
+    }
+
+    public void setQNum(String QNum) {
+        this.QNum = QNum;
+    }
+
+    public void setiQuestionID(String iQuestionID) {
+        this.iQuestionID = iQuestionID;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
+    public void setsShowID(String sShowID) {
+        this.sShowID = sShowID;
+    }
+
+    public void setbISMust(String bISMust) {
+        this.bISMust = bISMust;
+    }
+
+    public void setiCatalogID(String iCatalogID) {
+        this.iCatalogID = iCatalogID;
+    }
+
+    public void setiSort(String iSort) {
+        this.iSort = iSort;
+    }
+
+    public void setiCatalogSort(String iCatalogSort) {
+        this.iCatalogSort = iCatalogSort;
+    }
+
+    public void setiScore(String iScore) {
+        this.iScore = iScore;
+    }
+
+    public void setiCategory(String iCategory) {
+        this.iCategory = iCategory;
+    }
+
+    public void setiTemplateID(String iTemplateID) {
+        this.iTemplateID = iTemplateID;
+    }
+
+    public void setsCategoryText(String sCategoryText) {
+        this.sCategoryText = sCategoryText;
+    }
+
+    public void setiAnswerNumber(String iAnswerNumber) {
+        this.iAnswerNumber = iAnswerNumber;
+    }
+
+    public void setsDescription(String sDescription) {
+        this.sDescription = sDescription;
+    }
+
+    public void setOptions(List<Answer> options) {
+        this.options = options;
+    }
+
+    public void setRecommendAnswers(List<RecommendAnswer> recommendAnswers) {
+        this.recommendAnswers = recommendAnswers;
+    }
+
+    public void setLogics(List<Logic> logics) {
+        this.logics = logics;
     }
 
     public void setQuestionTilte(String sQuestionTilte) {
         this.sQuestionTilte = sQuestionTilte;
+    }
+
+    public String getiID() {
+        return iID;
+    }
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public String getiQuestionID() {
+        return iQuestionID;
+    }
+
+    public String getsShowID() {
+        return sShowID;
+    }
+
+    public String getsQuestionTilte() {
+        return sQuestionTilte;
+    }
+
+    public String getiSort() {
+        return iSort;
+    }
+
+    public String getiCatalogSort() {
+        return iCatalogSort;
+    }
+
+    public String getiCategory() {
+        return iCategory;
+    }
+
+    public String getsCategoryText() {
+        return sCategoryText;
+    }
+
+    public String getiTemplateID() {
+        return iTemplateID;
+    }
+
+    public String getiAnswerNumber() {
+        return iAnswerNumber;
+    }
+
+    public String getsDescription() {
+        return sDescription;
+    }
+
+    public List<RecommendAnswer> getRecommendAnswers() {
+        return recommendAnswers;
+    }
+
+    public List<Answer> getAnswerOptions(){
+        L.d("iID = "+iID);
+        return DataSupport.where("question_id = ?", 2+"").find(Answer.class);
+    }
+    public List<Logic> getLogicList(){
+        L.d("iID = "+iID);
+        return DataSupport.where("question_id = ?", 2+"").find(Logic.class);
     }
 }

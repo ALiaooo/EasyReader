@@ -19,6 +19,8 @@ import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.utils.Contents;
 import com.aliao.easyreader.utils.L;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +78,35 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
         mAdapter = new AnswerOptionsAdapter(getActivity(), mAnswerOptionList);
         mLvAnswerOption.setAdapter(mAdapter);
         mLvAnswerOption.setOnItemClickListener(this);
+
+        /**
+         * 开始答题的时候要查询第一道题
+         */
+        Question question = DataSupport.findFirst(Question.class);
+        L.d("Q" + question.getQNum() + "-问题 " + question.getQuestionTilte());
+        /**
+         * 查询出第一道题目的备选答案(查询某道题时把这道题对应的备选答案也一起查出来)
+         */
+        Question question1 = DataSupport.find(Question.class, 2);
+        List<Answer> answerList = question1.getAnswerOptions();
+        L.d("备选答案count= "+answerList.size());
+        for (int i = 0; i<answerList.size(); i++){
+            L.d(i+" = "+answerList.get(i).getsOptionTitle());
+        }
+        /**
+         * 查询出某道题目的逻辑跳转
+         */
+        List<Logic> logics = question1.getLogicList();
+        for (int i = 0; i<logics.size(); i++){
+            L.d(i+"questionid = "+logics.get(i).getiQuestionID());
+        }
+       /* Question question1 = DataSupport.find(Question.class, 2, true);
+        List<Answer> answerList = question1.getOptions();
+        L.d("answer list size = "+answerList.size());
+        for (int i = 0; i<answerList.size(); i++){
+            L.d(i+" = "+answerList.get(i).getsOptionTitle());
+        }*/
+
 
     }
 

@@ -11,10 +11,12 @@ import android.view.View;
 
 import com.aliao.easyreader.activity.NewSurveysActivity;
 import com.aliao.easyreader.entity.Answer;
+import com.aliao.easyreader.entity.Logic;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.entity.SurveyResult;
 import com.aliao.easyreader.entity.Surveys;
 import com.aliao.easyreader.utils.Contents;
+import com.aliao.easyreader.utils.L;
 import com.aliao.easyreader.utils.VolleySingleton;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,10 +34,10 @@ import java.util.List;
  */
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-
     private List<Surveys> mSurveyList;
     private List<Question> mQuestionList;
     private List<Answer> mAnswerOptionList;
+    private List<Logic> mLogicList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +60,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         mSurveyList = new ArrayList<>();
         mQuestionList = new ArrayList<>();
+        mAnswerOptionList = new ArrayList<>();
+        mLogicList = new ArrayList<>();
 
         GsonRequest<SurveyResult> request = new GsonRequest<SurveyResult>(Contents.SURVEY_DETAIL_LIST_REQUEST_URL, SurveyResult.class, new Response.Listener<SurveyResult>() {
             @Override
             public void onResponse(SurveyResult response) {
                 mSurveyList.addAll(response.getSurveys());
                 mQuestionList.addAll(mSurveyList.get(0).getQuestions());
-
+                L.d("mQuestionList = " + mQuestionList.size());
                 for (int i = 0; i<mQuestionList.size(); i++){
                     mAnswerOptionList.addAll(mQuestionList.get(i).getOptions());
+                    mLogicList.addAll(mQuestionList.get(i).getLogics());
                 }
-                saveDatasToDB();
+//                saveDatasToDB();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -82,12 +87,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void saveDatasToDB() {
-//        DataSupport.saveAll(mQuestionList);
-//        DataSupport.saveAll(mAnswerOptionList);
+       /* DataSupport.saveAll(mQuestionList);
+        DataSupport.saveAll(mAnswerOptionList);*/
 
+        DataSupport.saveAll(mAnswerOptionList);//答案
+        DataSupport.saveAll(mLogicList);//问题
+        DataSupport.saveAll(mQuestionList);//问题
+     /*   Answer answer = new Answer();
         Question question = new Question();
         question.setQuestionTilte("question title 1");
         question.saveThrows();
+        question.getOptions().add(answer);*/
 
     }
 

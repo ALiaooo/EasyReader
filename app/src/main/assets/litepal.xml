@@ -2,11 +2,12 @@
 <litepal>
     <dbname value="SurveyDemo"/>
 
-    <version value="1"></version>
+    <version value="2"></version>
 
     <list>
         <mapping class="com.aliao.easyreader.entity.Question"></mapping>
         <mapping class="com.aliao.easyreader.entity.Answer"></mapping>
+        <mapping class="com.aliao.easyreader.entity.Logic"></mapping>
     </list>
 
 </litepal>

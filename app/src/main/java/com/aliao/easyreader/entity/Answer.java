@@ -33,4 +33,48 @@ public class Answer extends DataSupport implements Serializable {
     public String getiID() {
         return iID;
     }
+
+    public String getsOptionTitle() {
+        return sOptionTitle;
+    }
+
+    public String getiSort() {
+        return iSort;
+    }
+
+    public String getbISOther() {
+        return bISOther;
+    }
+
+    public List<Score> getScorings() {
+        return scorings;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setsOptionTitle(String sOptionTitle) {
+        this.sOptionTitle = sOptionTitle;
+    }
+
+    public void setiSort(String iSort) {
+        this.iSort = iSort;
+    }
+
+    public void setScorings(List<Score> scorings) {
+        this.scorings = scorings;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public void setbISOther(String bISOther) {
+        this.bISOther = bISOther;
+    }
+
+    public void setiID(String iID) {
+        this.iID = iID;
+    }
 }
