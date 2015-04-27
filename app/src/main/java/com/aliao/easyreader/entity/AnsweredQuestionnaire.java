@@ -1,18 +1,14 @@
 package com.aliao.easyreader.entity;
 
-import com.aliao.easyreader.utils.L;
-
 import org.litepal.crud.DataSupport;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by 丽双 on 2015/4/23.
+ * Created by liaolishuang on 15/4/27.
+ * 已作答的问卷
  */
-public class Question extends DataSupport implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private String id;
+public class AnsweredQuestionnaire extends DataSupport {
     private String iID;//问题所在问卷中的id
     private String QNum;//问题序号-页面上提示的Q2
     private String questionType;//问题类型
@@ -31,20 +27,9 @@ public class Question extends DataSupport implements Serializable {
     private String sDescription;//问题描述（在打分题的问题后面有一段描述 如10-非常满意）
     private List<Answer> options;//问题选项
     private List<RecommendAnswer> recommendAnswers ;//开放题推荐选项
-    private List<Logic> logics;//逻辑关系，如果iQuestionID选择选项isSelectAnswers则从iSkipFrom跳转至iSkipTo
-    private Survey survey;//调查问卷与问题是一对多
-//    private boolean questionRequested;//是否必答 枚举类型？enum
-//    private String qIndex;//问题序号 eg: Q1，Q2
-//    private String qImgUrl;//问题图片url
-
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
+    private List<Logic> logics;
+    private String timeStamp;//开始答题起始时间
+    private Survey survey;
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
@@ -52,6 +37,14 @@ public class Question extends DataSupport implements Serializable {
 
     public Survey getSurvey() {
         return survey;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
     }
 
     public String getQuestionTilte() {
@@ -219,12 +212,8 @@ public class Question extends DataSupport implements Serializable {
         return recommendAnswers;
     }
 
-    public List<Answer> getAnswerOptions(){
-        L.d("iID = "+iID);
-        return DataSupport.where("question_id = ?", 2+"").find(Answer.class);
-    }
-    public List<Logic> getLogicList(){
-        L.d("iID = "+iID);
-        return DataSupport.where("question_id = ?", 2+"").find(Logic.class);
-    }
+
+
+
+
 }

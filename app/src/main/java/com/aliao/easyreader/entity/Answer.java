@@ -25,6 +25,15 @@ public class Answer extends DataSupport implements Serializable {
     private String bISOther;//是否是开放选项（true的情况下，该选项后面有文本框让用户自己填写）
     private List<Score> scorings;//多选打分题下的打分
     private Question question;//在Answer中声明了一个Question的实例，这样表示Question中可以包含多个answer，而Answer中只能对应一个Question，即多对一关系
+    private AnsweredQuestionnaire answeredQuestionnaire;
+
+    public AnsweredQuestionnaire getAnsweredQuestionnaire() {
+        return answeredQuestionnaire;
+    }
+
+    public void setAnsweredQuestionnaire(AnsweredQuestionnaire answeredQuestionnaire) {
+        this.answeredQuestionnaire = answeredQuestionnaire;
+    }
 
     public String getOptionTitle() {
         return sOptionTitle;

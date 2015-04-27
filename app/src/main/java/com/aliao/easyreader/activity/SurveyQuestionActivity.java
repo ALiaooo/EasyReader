@@ -8,10 +8,9 @@ import android.support.v7.widget.Toolbar;
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.QuestionPagerAdapter;
 import com.aliao.easyreader.entity.Logic;
-import com.aliao.easyreader.entity.PagerResult;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.entity.SurveyResult;
-import com.aliao.easyreader.entity.Surveys;
+import com.aliao.easyreader.entity.Survey;
 import com.aliao.easyreader.fragment.AnswerQuestionFragment;
 import com.aliao.easyreader.utils.Contents;
 import com.aliao.easyreader.utils.L;
@@ -19,6 +18,8 @@ import com.aliao.easyreader.utils.VolleySingleton;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.GsonRequest;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
 
     private ViewPager mViewPager;
     private QuestionPagerAdapter mPagerAdapter;
-    private List<Surveys> mSurveyList;
+    private List<Survey> mSurveyList;
     private List<Question> mQuestionList;
     private List<Logic> mJumpLogicList;
     private Logic mJumpLogic;
@@ -43,7 +44,31 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         setContentView(R.layout.activity_answer_survey);
 
         initViews();
-        requestDatas();
+        initDatas();
+//        requestDatas();
+    }
+
+
+    private void initViews() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_question_topbar);
+        toolbar.setTitle("答题");
+        setSupportActionBar(toolbar);
+        mSurveyList = new ArrayList<>();
+        mQuestionList = new ArrayList<>();
+        mJumpLogicList = new ArrayList<>();
+        mViewPager = (ViewPager) findViewById(R.id.vp_question);
+        mViewPager.setOnPageChangeListener(this);
+    }
+
+    private void initDatas() {
+        Question question = DataSupport.findFirst(Question.class);
+        mQuestionList.add(question);
+        setDatas();
+    }
+
+    private void setDatas() {
+        mPagerAdapter = new QuestionPagerAdapter(getSupportFragmentManager(), mQuestionList);
+        mViewPager.setAdapter(mPagerAdapter);
     }
 
     private void requestDatas() {
@@ -69,23 +94,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
 
     }
 
-    private void setDatas() {
 
-        mPagerAdapter = new QuestionPagerAdapter(getSupportFragmentManager(), mQuestionList);
-        mViewPager.setAdapter(mPagerAdapter);
-
-    }
-
-    private void initViews() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_question_topbar);
-        toolbar.setTitle("答题");
-        setSupportActionBar(toolbar);
-        mSurveyList = new ArrayList<>();
-        mQuestionList = new ArrayList<>();
-        mJumpLogicList = new ArrayList<>();
-        mViewPager = (ViewPager) findViewById(R.id.vp_question);
-        mViewPager.setOnPageChangeListener(this);
-    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

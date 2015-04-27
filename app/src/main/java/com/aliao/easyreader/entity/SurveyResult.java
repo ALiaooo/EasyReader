@@ -8,9 +8,9 @@ import java.util.List;
 public class SurveyResult {
 
    private String errorMessage;
-   private List<Surveys> surveys;
+   private List<Survey> surveys;
 
-    public List<Surveys> getSurveys() {
+    public List<Survey> getSurveys() {
         return surveys;
     }
 }

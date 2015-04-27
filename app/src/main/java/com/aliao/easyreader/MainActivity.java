@@ -12,9 +12,10 @@ import android.view.View;
 import com.aliao.easyreader.activity.NewSurveysActivity;
 import com.aliao.easyreader.entity.Answer;
 import com.aliao.easyreader.entity.Logic;
+import com.aliao.easyreader.entity.Pager;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.entity.SurveyResult;
-import com.aliao.easyreader.entity.Surveys;
+import com.aliao.easyreader.entity.Survey;
 import com.aliao.easyreader.utils.Contents;
 import com.aliao.easyreader.utils.L;
 import com.aliao.easyreader.utils.VolleySingleton;
@@ -34,10 +35,12 @@ import java.util.List;
  */
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-    private List<Surveys> mSurveyList;
+    private List<Survey> mSurveyList;
     private List<Question> mQuestionList;
     private List<Answer> mAnswerOptionList;
     private List<Logic> mLogicList;
+    private List<Pager> mPagerList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +65,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mQuestionList = new ArrayList<>();
         mAnswerOptionList = new ArrayList<>();
         mLogicList = new ArrayList<>();
+        mPagerList = new ArrayList<>();
 
         GsonRequest<SurveyResult> request = new GsonRequest<SurveyResult>(Contents.SURVEY_DETAIL_LIST_REQUEST_URL, SurveyResult.class, new Response.Listener<SurveyResult>() {
             @Override
             public void onResponse(SurveyResult response) {
                 mSurveyList.addAll(response.getSurveys());
-                mQuestionList.addAll(mSurveyList.get(0).getQuestions());
+                for (int i = 0; i<mSurveyList.size(); i++){
+                    mQuestionList.addAll(mSurveyList.get(i).getQuestions());
+                    mPagerList.add(mSurveyList.get(i).getInfo());
+                }
                 L.d("mQuestionList = " + mQuestionList.size());
                 for (int i = 0; i<mQuestionList.size(); i++){
                     mAnswerOptionList.addAll(mQuestionList.get(i).getOptions());
                     mLogicList.addAll(mQuestionList.get(i).getLogics());
                 }
-//                saveDatasToDB();
+                /**
+                 * ç¼“å­˜åˆ°æ•°æ®åº“ä¸­
+                 */
+                saveDatasToDB();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -87,17 +97,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void saveDatasToDB() {
-       /* DataSupport.saveAll(mQuestionList);
-        DataSupport.saveAll(mAnswerOptionList);*/
 
-        DataSupport.saveAll(mAnswerOptionList);//´ð°¸
-        DataSupport.saveAll(mLogicList);//ÎÊÌâ
-        DataSupport.saveAll(mQuestionList);//ÎÊÌâ
-     /*   Answer answer = new Answer();
-        Question question = new Question();
-        question.setQuestionTilte("question title 1");
-        question.saveThrows();
-        question.getOptions().add(answer);*/
+        DataSupport.saveAll(mAnswerOptionList);//ï¿½ï¿½
+        DataSupport.saveAll(mLogicList);//ï¿½ï¿½ï¿½ï¿½
+        DataSupport.saveAll(mQuestionList);//ï¿½ï¿½ï¿½ï¿½
+        DataSupport.saveAll(mPagerList);
+//        DataSupport.saveAll(mSurveyList);
 
     }
 

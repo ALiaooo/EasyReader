@@ -2,12 +2,16 @@
 <litepal>
     <dbname value="SurveyDemo"/>
 
-    <version value="2"></version>
+    <version value="5"></version>
 
     <list>
+        <mapping class="com.aliao.easyreader.entity.User"></mapping>
+        <mapping class="com.aliao.easyreader.entity.Pager"></mapping>
+        <mapping class="com.aliao.easyreader.entity.Survey"></mapping>
         <mapping class="com.aliao.easyreader.entity.Question"></mapping>
         <mapping class="com.aliao.easyreader.entity.Answer"></mapping>
         <mapping class="com.aliao.easyreader.entity.Logic"></mapping>
+        <mapping class="com.aliao.easyreader.entity.AnsweredQuestionnaire"></mapping>
     </list>
 
 </litepal>

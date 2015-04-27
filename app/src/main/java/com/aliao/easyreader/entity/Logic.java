@@ -16,6 +16,15 @@ public class Logic extends DataSupport implements Serializable {
     private String iSkipTo;//跳转至哪题
     private String iLogicType;//跳转类型：1.单个跳转 3.直接结束 4.结束问卷并提交-------？
     private Question question;
+    private AnsweredQuestionnaire answeredQuestionnaire;
+
+    public AnsweredQuestionnaire getAnsweredQuestionnaire() {
+        return answeredQuestionnaire;
+    }
+
+    public void setAnsweredQuestionnaire(AnsweredQuestionnaire answeredQuestionnaire) {
+        this.answeredQuestionnaire = answeredQuestionnaire;
+    }
 
     public String getSelectAnswers() {
         return iSelectAnswers;

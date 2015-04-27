@@ -67,7 +67,7 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
 
     private void initViews(View view) {
         mAnswerOptionList = new ArrayList<>();
-        mAnswerOptionList.addAll(mQuestion.getOptions());
+        mAnswerOptionList.addAll(mQuestion.getAnswerOptions());
         mJumpLogicList = new ArrayList<>();
         mJumpLogicList.addAll(mQuestion.getLogics());
         mTvQTitle = (TextView) view.findViewById(R.id.tv_question_title);
@@ -82,24 +82,24 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
         /**
          * 开始答题的时候要查询第一道题
          */
-        Question question = DataSupport.findFirst(Question.class);
-        L.d("Q" + question.getQNum() + "-问题 " + question.getQuestionTilte());
+//        Question question = DataSupport.findFirst(Question.class);
+//        L.d("Q" + question.getQNum() + "-问题 " + question.getQuestionTilte());
         /**
          * 查询出第一道题目的备选答案(查询某道题时把这道题对应的备选答案也一起查出来)
          */
-        Question question1 = DataSupport.find(Question.class, 2);
-        List<Answer> answerList = question1.getAnswerOptions();
-        L.d("备选答案count= "+answerList.size());
-        for (int i = 0; i<answerList.size(); i++){
-            L.d(i+" = "+answerList.get(i).getsOptionTitle());
-        }
+//        Question question1 = DataSupport.find(Question.class, 2);
+//        List<Answer> answerList = question1.getAnswerOptions();
+//        L.d("备选答案count= "+answerList.size());
+//        for (int i = 0; i<answerList.size(); i++){
+//            L.d(i+" = "+answerList.get(i).getsOptionTitle());
+//        }
         /**
          * 查询出某道题目的逻辑跳转
          */
-        List<Logic> logics = question1.getLogicList();
-        for (int i = 0; i<logics.size(); i++){
-            L.d(i+"questionid = "+logics.get(i).getiQuestionID());
-        }
+//        List<Logic> logics = question1.getLogicList();
+//        for (int i = 0; i<logics.size(); i++){
+//            L.d(i+"questionid = "+logics.get(i).getiQuestionID());
+//        }
        /* Question question1 = DataSupport.find(Question.class, 2, true);
         List<Answer> answerList = question1.getOptions();
         L.d("answer list size = "+answerList.size());
