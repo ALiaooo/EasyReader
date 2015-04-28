@@ -18,7 +18,7 @@ public class Answer extends DataSupport implements Serializable {
 //    private String aImgUrl;//选项图片url
 //    private List<Question> questions;//子问题
 
-
+    private long id;
     private String iID;//问题选项id，入库的时候存的answer就是这个id
     private String sOptionTitle;//选项名称
     private String iSort;//选项排序
@@ -33,6 +33,14 @@ public class Answer extends DataSupport implements Serializable {
 
     public void setAnsweredQuestionnaire(AnsweredQuestionnaire answeredQuestionnaire) {
         this.answeredQuestionnaire = answeredQuestionnaire;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getOptionTitle() {

@@ -9,9 +9,18 @@ import java.util.List;
  * 用户信息
  */
 public class User extends DataSupport {
+    private long id;
     private String userId;
     private String userName;
     private List<Survey> surveys;//用户与调查问卷是一对多关系
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public void setUserId(String userId) {
         this.userId = userId;

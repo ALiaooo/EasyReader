@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.QuestionPagerAdapter;
+import com.aliao.easyreader.entity.Answer;
 import com.aliao.easyreader.entity.Logic;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.entity.SurveyResult;
@@ -36,6 +38,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
     private List<Logic> mJumpLogicList;
     private Logic mJumpLogic;
     private List<Question> mRealTimeQuestionList;
+    private  Question mQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +64,20 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
     }
 
     private void initDatas() {
-        Question question = DataSupport.findFirst(Question.class);
-        mQuestionList.add(question);
+        /**
+         * 从数据库中取出第一道题
+         */
+        mQuestion = DataSupport.findFirst(Question.class);
+        /**
+         * 从数据库中取出第一道题的答案选项
+         */
+//        List<Answer> options = question.getAnswerOptions();
+        /**
+         * 从数据库中取出第一道题的逻辑选项
+         */
+//        List<Logic> logics = question.getLogicList();
+
+        mQuestionList.add(mQuestion);
         setDatas();
     }
 
@@ -117,6 +132,25 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         }else {//有逻辑跳转
 //            mRealTimeQuestionList.add()
         }
+        /**
+         * 其实不用判断选择了哪个选项，直接遍历逻辑列表查找
+         */
+        for (int i = 0; i<mQuestion.getLogicList().size(); i++){
+            //获取
+            mQuestion.getLogicList().get(i);
+        }
+        String questionId;
+        String isSelectedAnswerId;
+        String skipTo;
+        for (Logic logic:mQuestion.getLogicList()){
+            questionId = logic.getiQuestionID();
+            isSelectedAnswerId = logic.getiSelectAnswers();
+            //从已答问卷表里判断做过的题目里是否有questionId且答案选项为isSelectedAnserId,如果有break
+//            if ()
+        }
+
+        //如果没有任何逻辑跳转，取下一题
+
 
     }
 

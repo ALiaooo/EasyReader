@@ -12,15 +12,20 @@ import android.widget.ListView;
 
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.NewSurveyAdapter;
+import com.aliao.easyreader.entity.AnsweredQuestionnaire;
 import com.aliao.easyreader.entity.Pager;
 import com.aliao.easyreader.entity.PagerResult;
 import com.aliao.easyreader.utils.Contents;
+import com.aliao.easyreader.utils.DBUtility;
+import com.aliao.easyreader.utils.L;
 import com.aliao.easyreader.utils.VolleySingleton;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.GsonRequest;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,6 +78,13 @@ public class NewSurveysActivity extends ActionBarActivity implements AdapterView
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(NewSurveysActivity.this, SurveyQuestionActivity.class);
         startActivity(intent);
+        /**
+         * 点击开始答题的时候，将起始时间保存到已答问卷表里
+         */
+        DBUtility.saveTimeStampToAnsweredQuestionaire();//
+//        DBUtility.saveTimeStampToAnsweredQuestionaire();
+
+
         /*Button beginAnswer = (Button) view.findViewById(R.id.btn_item_new_survey_begin);
         beginAnswer.setOnClickListener(new View.OnClickListener() {
             @Override

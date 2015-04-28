@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 public class Logic extends DataSupport implements Serializable {
 
+    private long id;
     private String iID;//逻辑主键id
     private String iQuestionID;//问卷问题id------->?
     private String iSelectAnswers;//回答的选项
@@ -24,6 +25,14 @@ public class Logic extends DataSupport implements Serializable {
 
     public void setAnsweredQuestionnaire(AnsweredQuestionnaire answeredQuestionnaire) {
         this.answeredQuestionnaire = answeredQuestionnaire;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getSelectAnswers() {

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Question extends DataSupport implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String id;
+    private long id;
     private String iID;//问题所在问卷中的id
     private String QNum;//问题序号-页面上提示的Q2
     private String questionType;//问题类型
@@ -33,17 +33,27 @@ public class Question extends DataSupport implements Serializable {
     private List<RecommendAnswer> recommendAnswers ;//开放题推荐选项
     private List<Logic> logics;//逻辑关系，如果iQuestionID选择选项isSelectAnswers则从iSkipFrom跳转至iSkipTo
     private Survey survey;//调查问卷与问题是一对多
+    private Pager pager;
+
 //    private boolean questionRequested;//是否必答 枚举类型？enum
 //    private String qIndex;//问题序号 eg: Q1，Q2
 //    private String qImgUrl;//问题图片url
 
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPager(Pager pager) {
+        this.pager = pager;
     }
 
-    public String getId() {
+    public Pager getPager() {
+        return pager;
+    }
+
+    public long getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setSurvey(Survey survey) {
@@ -219,12 +229,21 @@ public class Question extends DataSupport implements Serializable {
         return recommendAnswers;
     }
 
+    /**
+     * 获取和Qeustion表关联的答案选项表里的选项
+     * @return
+     */
     public List<Answer> getAnswerOptions(){
         L.d("iID = "+iID);
-        return DataSupport.where("question_id = ?", 2+"").find(Answer.class);
+        return DataSupport.where("question_id = ?", String.valueOf(id)).find(Answer.class);
     }
+
+    /**
+     * 获取Qeustion表关联的逻辑表里的逻辑列表
+     * @return
+     */
     public List<Logic> getLogicList(){
         L.d("iID = "+iID);
-        return DataSupport.where("question_id = ?", 2+"").find(Logic.class);
+        return DataSupport.where("question_id = ?",  String.valueOf(id)).find(Logic.class);
     }
 }

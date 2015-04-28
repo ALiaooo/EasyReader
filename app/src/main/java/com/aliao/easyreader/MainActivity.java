@@ -17,6 +17,7 @@ import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.entity.SurveyResult;
 import com.aliao.easyreader.entity.Survey;
 import com.aliao.easyreader.utils.Contents;
+import com.aliao.easyreader.utils.DBUtility;
 import com.aliao.easyreader.utils.L;
 import com.aliao.easyreader.utils.VolleySingleton;
 import com.android.volley.Response;
@@ -26,7 +27,10 @@ import com.android.volley.toolbox.GsonRequest;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,7 +87,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 /**
                  * 缓存到数据库中
                  */
-                saveDatasToDB();
+                DBUtility.saveTemplateSurvey(mSurveyList);
+//                saveDatasToDB();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -94,16 +99,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         VolleySingleton.getInstance(this).addToRequestQueue(request);
 
+        DateFormat dateTimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String strBeginDate = dateTimeformat.format(new Date());
+        L.d("date = " + strBeginDate);
+
     }
 
+    /**
+     * 缓存到数据库中
+     */
     private void saveDatasToDB() {
-
         DataSupport.saveAll(mAnswerOptionList);//��
         DataSupport.saveAll(mLogicList);//����
         DataSupport.saveAll(mQuestionList);//����
         DataSupport.saveAll(mPagerList);
 //        DataSupport.saveAll(mSurveyList);
-
     }
 
 

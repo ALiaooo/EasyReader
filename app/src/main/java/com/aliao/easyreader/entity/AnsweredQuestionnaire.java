@@ -9,6 +9,7 @@ import java.util.List;
  * 已作答的问卷
  */
 public class AnsweredQuestionnaire extends DataSupport {
+    private long id;
     private String iID;//问题所在问卷中的id
     private String QNum;//问题序号-页面上提示的Q2
     private String questionType;//问题类型
@@ -30,6 +31,23 @@ public class AnsweredQuestionnaire extends DataSupport {
     private List<Logic> logics;
     private String timeStamp;//开始答题起始时间
     private Survey survey;
+    private Pager pager;//与问卷调查表多对一关联
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setPager(Pager pager) {
+        this.pager = pager;
+    }
+
+    public Pager getPager() {
+        return pager;
+    }
 
     public void setSurvey(Survey survey) {
         this.survey = survey;

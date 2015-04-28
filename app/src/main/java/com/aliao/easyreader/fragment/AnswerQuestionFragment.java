@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.AnswerOptionsAdapter;
 import com.aliao.easyreader.entity.Answer;
+import com.aliao.easyreader.entity.AnsweredQuestionnaire;
 import com.aliao.easyreader.entity.Logic;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.utils.Contents;
@@ -36,7 +37,6 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
     private OnAnswerQuestionFragmentInteractionListener mListener;
     private List<Answer> mAnswerOptionList;
     private List<Logic> mJumpLogicList;
-
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -69,7 +69,7 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
         mAnswerOptionList = new ArrayList<>();
         mAnswerOptionList.addAll(mQuestion.getAnswerOptions());
         mJumpLogicList = new ArrayList<>();
-        mJumpLogicList.addAll(mQuestion.getLogics());
+        mJumpLogicList.addAll(mQuestion.getLogicList());
         mTvQTitle = (TextView) view.findViewById(R.id.tv_question_title);
         mLvAnswerOption = (ListView) view.findViewById(R.id.lv_answer_option_list);
         //设置题目
@@ -126,6 +126,9 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
                 break;
             }
         }
+
+        //保存到已答问卷表里
+
 
         Bundle bundle = new Bundle();
         bundle.putString(Contents.ANSWER_OPTION_ID, answerOptionId);

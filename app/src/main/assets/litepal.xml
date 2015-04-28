@@ -7,7 +7,6 @@
     <list>
         <mapping class="com.aliao.easyreader.entity.User"></mapping>
         <mapping class="com.aliao.easyreader.entity.Pager"></mapping>
-        <mapping class="com.aliao.easyreader.entity.Survey"></mapping>
         <mapping class="com.aliao.easyreader.entity.Question"></mapping>
         <mapping class="com.aliao.easyreader.entity.Answer"></mapping>
         <mapping class="com.aliao.easyreader.entity.Logic"></mapping>

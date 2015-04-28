@@ -13,13 +13,48 @@ public class Pager extends DataSupport {
 //    private String pagerTitle;//问卷名称
 //    private String pagerIntro;//问卷描述
 //    private List<Question> questionList;//问题列表
-
+    private long id;
     private String iID;//问卷id
     private String sTitle;//问卷标题
     private int iTypeID;//问卷类别id
     private String sTypeName;//问卷类别名称
     private String sCompanyName;//服务企业
     private String dUpdateTime;
+    private List<Question> questions;
+    private List<AnsweredQuestionnaire> answeredQuestionnaires;
+    private User user;
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public List<AnsweredQuestionnaire> getAnsweredQuestionnaires() {
+        return answeredQuestionnaires;
+    }
+
+    public void setAnsweredQuestionnaires(List<AnsweredQuestionnaire> answeredQuestionnaires) {
+        this.answeredQuestionnaires = answeredQuestionnaires;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public User getUser() {
+        return user;
+    }
 
     public void setsTitle(String sTitle) {
         this.sTitle = sTitle;
