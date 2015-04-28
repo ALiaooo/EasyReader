@@ -9,6 +9,7 @@ import android.util.Log;
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.QuestionPagerAdapter;
 import com.aliao.easyreader.entity.Answer;
+import com.aliao.easyreader.entity.AnsweredQuestionnaire;
 import com.aliao.easyreader.entity.Logic;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.entity.SurveyResult;
@@ -38,7 +39,8 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
     private List<Logic> mJumpLogicList;
     private Logic mJumpLogic;
     private List<Question> mRealTimeQuestionList;
-    private  Question mQuestion;
+    private Question mQuestion;
+    private List<AnsweredQuestionnaire> mAnsweredQuestionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_question_topbar);
         toolbar.setTitle("答题");
         setSupportActionBar(toolbar);
+        mAnsweredQuestionList = new ArrayList<>();
         mSurveyList = new ArrayList<>();
         mQuestionList = new ArrayList<>();
         mJumpLogicList = new ArrayList<>();
@@ -78,6 +81,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
 //        List<Logic> logics = question.getLogicList();
 
         mQuestionList.add(mQuestion);
+
         setDatas();
     }
 
@@ -162,6 +166,10 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
     @Override
     public void onAnswerQuestionFragmentInteraction(Bundle bundle) {
         //传回来选择的id
-        mJumpLogic = (Logic) bundle.getSerializable(Contents.LOGIC_OBG);
+//        mJumpLogic = (Logic) bundle.getSerializable(Contents.LOGIC_OBG);
+        //保存
+        mQuestionList.add(DataSupport.find(Question.class, Integer.parseInt(mQuestion.getQNum()+1)));
+        L.d("mQuestionList size = "+mQuestionList.size());
+        mPagerAdapter.notifyDataSetChanged();
     }
 }

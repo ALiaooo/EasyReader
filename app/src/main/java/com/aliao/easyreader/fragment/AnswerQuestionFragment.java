@@ -120,20 +120,20 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
         Logic logic = null;
 
         //选择了某个id以后，根据id开始匹配logic
-        for (int i = 0; i< mJumpLogicList.size(); i++){
-            if (mJumpLogicList.get(i).getSelectAnswers().equals(answerOptionId)){
-                logic = mJumpLogicList.get(i);
-                break;
-            }
-        }
+//        for (int i = 0; i< mJumpLogicList.size(); i++){
+//            if (mJumpLogicList.get(i).getSelectAnswers().equals(answerOptionId)){
+//                logic = mJumpLogicList.get(i);
+//                break;
+//            }
+//        }
 
         //保存到已答问卷表里
 
 
-        Bundle bundle = new Bundle();
-        bundle.putString(Contents.ANSWER_OPTION_ID, answerOptionId);
-        bundle.putSerializable(Contents.LOGIC_OBG, logic);
-        mListener.onAnswerQuestionFragmentInteraction(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putString(Contents.ANSWER_OPTION_ID, answerOptionId);
+//        bundle.putSerializable(Contents.LOGIC_OBG, logic);
+        mListener.onAnswerQuestionFragmentInteraction(null);
     }
 
     @Override

@@ -16,12 +16,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by ÀöË« on 2015/4/28.
+ * Created by ï¿½ï¿½Ë« on 2015/4/28.
  */
 public class DBUtility {
 
     /**
-     * ½«»ñÈ¡µÄÊı¾İ±£´æµ½Êı¾İ¿â
+     * ç¼“å­˜æ¨¡æ¿é—®å·
      * @param surveyList
      */
     public static void saveTemplateSurvey(List<Survey> surveyList){
@@ -46,21 +46,31 @@ public class DBUtility {
 
 
     /**
-     * ½«¿ªÊ¼´ğÌâµÄÊ±¼ä±£´æµ½ÒÑ´ğÎÊ¾í±íÀï
+     * å°†å¼€å§‹ç­”é¢˜æ—¶é—´ä¿å­˜åˆ°å·²ç­”é—®å·é‡Œ
      */
     public static void saveTimeStampToAnsweredQuestionaire(){
         AnsweredQuestionnaire answeredQuestionnaire = new AnsweredQuestionnaire();
-        answeredQuestionnaire.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));//±£´æµ½¿ªÊ¼´ğÌâÊ±¼ä
+        answeredQuestionnaire.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         answeredQuestionnaire.save();
     }
 
     /**
-     * ±£´æ¸ÃÌâµ½ÁÙÊ±±íÀï
+     * å•é“é¢˜å­˜å‚¨åˆ°å·²ç­”é—®å·ä¸­
      */
-    public static void saveToAnsweredQeustionnaire(){
+    public static void saveSimpleToAnsweredQeustionnaire(){
         AnsweredQuestionnaire answeredQuestionnaire = new AnsweredQuestionnaire();
 //        answeredQuestionnaire.;
+
         answeredQuestionnaire.save();
+    }
+
+    /**
+     * æ‰¹é‡å­˜å‚¨åˆ°å·²ç­”é—®å·ä¸­
+     */
+    public static void saveMultyToAnsweredQeustionnaire(){
+        AnsweredQuestionnaire answeredQuestionnaire = new AnsweredQuestionnaire();
+//        answeredQuestionnaire.;
+
         answeredQuestionnaire.save();
     }
 }
