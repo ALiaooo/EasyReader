@@ -35,6 +35,33 @@ public class Question extends DataSupport implements Serializable {
     private Survey survey;//调查问卷与问题是一对多
     private Pager pager;
 
+    //************************************
+    private String answerOptionId;
+    private int optionOrder;
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getAnswerOptionId() {
+        return answerOptionId;
+    }
+
+    public void setAnswerOptionId(String answerOptionId) {
+        this.answerOptionId = answerOptionId;
+    }
+
+    public void setOptionOrder(int optionOrder) {
+        this.optionOrder = optionOrder;
+    }
+
+    public int getOptionOrder() {
+        return optionOrder;
+    }
+
+    //************************************
+
+
 //    private boolean questionRequested;//是否必答 枚举类型？enum
 //    private String qIndex;//问题序号 eg: Q1，Q2
 //    private String qImgUrl;//问题图片url
@@ -234,7 +261,7 @@ public class Question extends DataSupport implements Serializable {
      * @return
      */
     public List<Answer> getAnswerOptions(){
-        L.d("iID = "+iID);
+//        L.d("iID = "+iID);
         return DataSupport.where("question_id = ?", String.valueOf(id)).find(Answer.class);
     }
 
@@ -243,7 +270,7 @@ public class Question extends DataSupport implements Serializable {
      * @return
      */
     public List<Logic> getLogicList(){
-        L.d("iID = "+iID);
+//        L.d("iID = "+iID);
         return DataSupport.where("question_id = ?",  String.valueOf(id)).find(Logic.class);
     }
 }

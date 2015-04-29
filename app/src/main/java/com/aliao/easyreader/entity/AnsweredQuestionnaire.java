@@ -32,6 +32,24 @@ public class AnsweredQuestionnaire extends DataSupport {
     private String timeStamp;//开始答题起始时间
     private Survey survey;
     private Pager pager;//与问卷调查表多对一关联
+    private String answerOptionId;
+    private int optionOrder;
+
+    public void setAnswerOptionId(String answerOptionId) {
+        this.answerOptionId = answerOptionId;
+    }
+
+    public String getAnswerOptionId() {
+        return answerOptionId;
+    }
+
+    public void setOptionOrder(int optionOrder) {
+        this.optionOrder = optionOrder;
+    }
+
+    public int getOptionOrder() {
+        return optionOrder;
+    }
 
     public void setId(long id) {
         this.id = id;

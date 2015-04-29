@@ -12,17 +12,21 @@ import android.widget.ListView;
 
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.NewSurveyAdapter;
+import com.aliao.easyreader.encrypt.DES;
 import com.aliao.easyreader.entity.AnsweredQuestionnaire;
 import com.aliao.easyreader.entity.Pager;
 import com.aliao.easyreader.entity.PagerResult;
 import com.aliao.easyreader.utils.Contents;
 import com.aliao.easyreader.utils.DBUtility;
+import com.aliao.easyreader.utils.DateUtil;
 import com.aliao.easyreader.utils.L;
+import com.aliao.easyreader.utils.StringUtils;
 import com.aliao.easyreader.utils.VolleySingleton;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.GsonRequest;
 
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +40,8 @@ public class NewSurveysActivity extends ActionBarActivity implements AdapterView
     private ListView mLvNewSurvey;
     private NewSurveyAdapter mAdapter;
     private List<Pager> mSurveyList;
+
+    public static final String ENCODING = "UTF-8";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +64,25 @@ public class NewSurveysActivity extends ActionBarActivity implements AdapterView
     }
 
     private void requestDatas() {
+//http://csis.fdc.test.fang.com/SurveyInterface/GetSurveys.ashx?iUserID=10138
 
-        GsonRequest<PagerResult> request = new GsonRequest<PagerResult>(Contents.NEW_SURVEY_LIST_REQUEST_URL, PagerResult.class, new Response.Listener<PagerResult>() {
+       /* iUserID:用户ID(需加密)
+        encrypt:加密串(MD5)  iUserID+加密私钥(csis_app)*/
+
+        String userId = "10138";
+        //MD5加密
+        String encrypt = StringUtils.getMD5Str(userId+"csis_app");
+        try {
+            //参数加密
+            userId = URLEncoder.encode(DES.encryptDES(userId, "csis_app"), ENCODING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String url = "http://csis.fdc.test.fang.com/SurveyInterface/App_GetSurveys.ashx?iUserID="+userId+"&encrypt="+encrypt;
+        L.d("url = "+url);
+
+        GsonRequest<PagerResult> request = new GsonRequest<PagerResult>(url, PagerResult.class, new Response.Listener<PagerResult>() {
             @Override
             public void onResponse(PagerResult response) {
                 mSurveyList.addAll(response.getSurveys());
@@ -77,11 +100,12 @@ public class NewSurveysActivity extends ActionBarActivity implements AdapterView
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(NewSurveysActivity.this, SurveyQuestionActivity.class);
+        intent.putExtra("time", DateUtil.getCurrentDate());
         startActivity(intent);
         /**
          * 点击开始答题的时候，将起始时间保存到已答问卷表里
          */
-        DBUtility.saveTimeStampToAnsweredQuestionaire();//
+//        DBUtility.saveTimeStampToAnsweredQuestionaire();//
 //        DBUtility.saveTimeStampToAnsweredQuestionaire();
 
 

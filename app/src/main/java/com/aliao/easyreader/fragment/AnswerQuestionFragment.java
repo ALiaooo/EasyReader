@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * Created by 丽双 on 2015/4/24.
+ * 做题
  */
 public class AnswerQuestionFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -67,7 +68,7 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
 
     private void initViews(View view) {
         mAnswerOptionList = new ArrayList<>();
-        mAnswerOptionList.addAll(mQuestion.getAnswerOptions());
+        mAnswerOptionList.addAll(mQuestion.getAnswerOptions());//题目选项
         mJumpLogicList = new ArrayList<>();
         mJumpLogicList.addAll(mQuestion.getLogicList());
         mTvQTitle = (TextView) view.findViewById(R.id.tv_question_title);
@@ -78,44 +79,29 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
         mAdapter = new AnswerOptionsAdapter(getActivity(), mAnswerOptionList);
         mLvAnswerOption.setAdapter(mAdapter);
         mLvAnswerOption.setOnItemClickListener(this);
-
-        /**
-         * 开始答题的时候要查询第一道题
-         */
-//        Question question = DataSupport.findFirst(Question.class);
-//        L.d("Q" + question.getQNum() + "-问题 " + question.getQuestionTilte());
-        /**
-         * 查询出第一道题目的备选答案(查询某道题时把这道题对应的备选答案也一起查出来)
-         */
-//        Question question1 = DataSupport.find(Question.class, 2);
-//        List<Answer> answerList = question1.getAnswerOptions();
-//        L.d("备选答案count= "+answerList.size());
-//        for (int i = 0; i<answerList.size(); i++){
-//            L.d(i+" = "+answerList.get(i).getsOptionTitle());
-//        }
-        /**
-         * 查询出某道题目的逻辑跳转
-         */
-//        List<Logic> logics = question1.getLogicList();
-//        for (int i = 0; i<logics.size(); i++){
-//            L.d(i+"questionid = "+logics.get(i).getiQuestionID());
-//        }
-       /* Question question1 = DataSupport.find(Question.class, 2, true);
-        List<Answer> answerList = question1.getOptions();
-        L.d("answer list size = "+answerList.size());
-        for (int i = 0; i<answerList.size(); i++){
-            L.d(i+" = "+answerList.get(i).getsOptionTitle());
-        }*/
-
-
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        //保存该题答案和位置
+        String answerOptionId = mAnswerOptionList.get(position).getiID();
+        mQuestion.setAnswerOptionId(answerOptionId);
+        mQuestion.setOptionOrder(position);
+        L.d("mQuestion.getAnswerOptionId() = " + mQuestion.getAnswerOptionId());
+        //将question返回
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Contents.QUESTION_OBG, mQuestion);
+        mListener.onAnswerQuestionFragmentInteraction(bundle);
+
+        /**
+         * 确定点击了哪个选项
+         */
+
+
         L.d("onItemClick-postion = "+mLvAnswerOption.getCheckedItemPosition());
 
-        String answerOptionId = mAnswerOptionList.get(position).getiID();
+
 
         Logic logic = null;
 
@@ -133,7 +119,12 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
 //        Bundle bundle = new Bundle();
 //        bundle.putString(Contents.ANSWER_OPTION_ID, answerOptionId);
 //        bundle.putSerializable(Contents.LOGIC_OBG, logic);
-        mListener.onAnswerQuestionFragmentInteraction(null);
+
+
+        
+
+        //需要把题号传回去
+//        mListener.onAnswerQuestionFragmentInteraction(null);
     }
 
     @Override

@@ -22,5 +22,13 @@
         android:textColor="@android:color/black"
         android:layout_below="@id/tb_main_topbar"
         />
+    <Button
+        android:id="@+id/btn_get_unfinished_surveys"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未完成的问卷"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/btn_get_new_surveys"
+        />
 
 </RelativeLayout>

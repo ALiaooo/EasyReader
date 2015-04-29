@@ -1,10 +1,13 @@
 package com.aliao.easyreader.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.QuestionPagerAdapter;
@@ -16,6 +19,7 @@ import com.aliao.easyreader.entity.SurveyResult;
 import com.aliao.easyreader.entity.Survey;
 import com.aliao.easyreader.fragment.AnswerQuestionFragment;
 import com.aliao.easyreader.utils.Contents;
+import com.aliao.easyreader.utils.DBUtility;
 import com.aliao.easyreader.utils.L;
 import com.aliao.easyreader.utils.VolleySingleton;
 import com.android.volley.Response;
@@ -39,14 +43,19 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
     private List<Logic> mJumpLogicList;
     private Logic mJumpLogic;
     private List<Question> mRealTimeQuestionList;
-    private Question mQuestion;
+    private Question mCurrentQuestion;
     private List<AnsweredQuestionnaire> mAnsweredQuestionList;
+    private int mCurrentIndex = 0;//当前页卡编号,滑动到哪页，该页就是当前页
+    private int mLastIndex;//做到的最后一道题的页数
+    private String mTimeStamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_answer_survey);
+
+        mTimeStamp = getIntent().getExtras().getString("time");
 
         initViews();
         initDatas();
@@ -68,20 +77,25 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
 
     private void initDatas() {
         /**
-         * 从数据库中取出第一道题
+         * 1.从数据库中取出第一道题
          */
-        mQuestion = DataSupport.findFirst(Question.class);
+        mCurrentQuestion = DataSupport.findFirst(Question.class);
+                /**
+                 * 从数据库中取出第一道题的答案选项
+                 */
+        //        List<Answer> options = question.getAnswerOptions();
+                /**
+                 * 从数据库中取出第一道题的逻辑选项
+                 */
+        //        List<Logic> logics = question.getLogicList();
         /**
-         * 从数据库中取出第一道题的答案选项
+         * 2.添加到数据源中
          */
-//        List<Answer> options = question.getAnswerOptions();
+        mQuestionList.add(mCurrentQuestion);
+
         /**
-         * 从数据库中取出第一道题的逻辑选项
+         * 3.setAdapter
          */
-//        List<Logic> logics = question.getLogicList();
-
-        mQuestionList.add(mQuestion);
-
         setDatas();
     }
 
@@ -139,22 +153,34 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         /**
          * 其实不用判断选择了哪个选项，直接遍历逻辑列表查找
          */
-        for (int i = 0; i<mQuestion.getLogicList().size(); i++){
+        for (int i = 0; i<mCurrentQuestion.getLogicList().size(); i++){
             //获取
-            mQuestion.getLogicList().get(i);
+            mCurrentQuestion.getLogicList().get(i);
         }
         String questionId;
         String isSelectedAnswerId;
         String skipTo;
-        for (Logic logic:mQuestion.getLogicList()){
+        for (Logic logic:mCurrentQuestion.getLogicList()){
             questionId = logic.getiQuestionID();
             isSelectedAnswerId = logic.getiSelectAnswers();
             //从已答问卷表里判断做过的题目里是否有questionId且答案选项为isSelectedAnserId,如果有break
 //            if ()
         }
 
-        //如果没有任何逻辑跳转，取下一题
+        L.d("postion = "+position);//代表哪个页面被选中，即当前页面同mCurrentIndex
 
+        //如果没有任何逻辑跳转，取下一题
+        mCurrentIndex = position;
+        L.d("mCurrentIndex = "+mCurrentIndex);
+        L.d("pager mLastIndex = "+mLastIndex);
+
+        //如果往回滑，可能是去改题，如果发现修改了答案，那么更新数据源
+        //往回滑，当前的对象要变成当前页的
+        mCurrentQuestion = mQuestionList.get(position);
+        L.d("往回滑到当前页，之前选的答案选项getAnswerOptionId = "+mCurrentQuestion.getAnswerOptionId());
+     /*   if (){
+
+        }*/
 
     }
 
@@ -165,11 +191,136 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
 
     @Override
     public void onAnswerQuestionFragmentInteraction(Bundle bundle) {
-        //传回来选择的id
-//        mJumpLogic = (Logic) bundle.getSerializable(Contents.LOGIC_OBG);
-        //保存
-        mQuestionList.add(DataSupport.find(Question.class, Integer.parseInt(mQuestion.getQNum()+1)));
-        L.d("mQuestionList size = "+mQuestionList.size());
+
+        //滑到前面去修改了答案，那么数据源list重新从该题开始.如果没有修改答案那么不改动list，如果有修改，则清空之后的数据源
+        if (mLastIndex > mCurrentIndex){//简易版-滑到前面的题去，只要重新点击了某个选项就调整已答问卷表
+
+            int i = mQuestionList.size()-1;
+            while ( i != mCurrentIndex){
+                mQuestionList.remove(i);
+                i--;
+            }
+
+            L.d("修改题目后当前题目数 size = " + mQuestionList.size());
+        }
+
+        //打印每一题的答案选项位置
+        for (int i =0; i<mQuestionList.size(); i++){
+            L.d(i+"-getOptionOrder = " + mQuestionList.get(i).getOptionOrder());
+        }
+
+        //数据源添加下一题，只添加一次
+        Question nextQuestion = DataSupport.find(Question.class, Integer.parseInt(mCurrentQuestion.getQNum())+1);
+
+        if (!mQuestionList.contains(nextQuestion))
+            mQuestionList.add(nextQuestion);
+
+        //mQuestion也换成当前
+        mCurrentQuestion = nextQuestion;
+
+
+        L.d("下一题的题号 = " + mCurrentQuestion.getQNum());
+        L.d("当前题目数 size = " + mQuestionList.size());
+
+
+        //数据源变化，更新
         mPagerAdapter.notifyDataSetChanged();
+
+        //自动跳到下一题
+        mLastIndex = mCurrentIndex+1;
+        mViewPager.setCurrentItem(mLastIndex, true);
+        L.d("click mLastIndex = " + mLastIndex);
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+
+        if (keyCode == KeyEvent.KEYCODE_BACK ){
+
+            // 创建退出对话框
+
+            AlertDialog isExit = new AlertDialog.Builder(this).create();
+
+            // 设置对话框标题
+
+            isExit.setTitle("提示");
+
+            // 设置对话框消息
+
+            isExit.setMessage("确定要暂停作答吗");
+
+            // 添加选择按钮并注册监听
+
+            isExit.setButton("确定", listener);
+
+            isExit.setButton2("取消", listener);
+
+            // 显示对话框
+
+            isExit.show();
+
+        }
+        return false;
+
+    }
+
+    /**监听对话框里面的button点击事件*/
+
+    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener(){
+
+        public void onClick(DialogInterface dialog, int which){
+
+            switch (which){
+
+                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
+
+                    //先保存到数据库中
+                    List<AnsweredQuestionnaire> answeredQuestionnaireList = new ArrayList<>();
+                    for (Question question:mQuestionList){
+                        AnsweredQuestionnaire aQusetion = new AnsweredQuestionnaire();
+                        aQusetion.setiID(question.getiID());
+                        aQusetion.setQNum(question.getQNum());
+                        aQusetion.setQuestionType(question.getQuestionType());
+                        aQusetion.setiQuestionID(question.getiQuestionID());
+                        aQusetion.setsShowID(question.getsShowID());
+                        aQusetion.setsQuestionTilte(question.getQuestionTilte());
+                        aQusetion.setbISMust(question.getbISMust());
+                        aQusetion.setiCatalogID(question.getiCatalogID());
+                        aQusetion.setiScore(question.getiScore());
+                        aQusetion.setiCategory(question.getiCategory());
+                        aQusetion.setiTemplateID(question.getiTemplateID());
+                        aQusetion.setiAnswerNumber(question.getiAnswerNumber());
+                        aQusetion.setsDescription(question.getsDescription());
+                        aQusetion.setOptions(question.getOptions());
+                        aQusetion.setRecommendAnswers(question.getRecommendAnswers());
+                        aQusetion.setLogics(question.getLogics());
+                        aQusetion.setTimeStamp(mTimeStamp);
+                        aQusetion.setSurvey(question.getSurvey());
+                        aQusetion.setPager(question.getPager());
+                        aQusetion.setAnswerOptionId(question.getAnswerOptionId());
+                        aQusetion.setOptionOrder(question.getOptionOrder());
+                        answeredQuestionnaireList.add(aQusetion);
+                    }
+
+                    DBUtility.saveMultyToAnsweredQeustionnaire(answeredQuestionnaireList);
+
+                    finish();
+
+                    break;
+
+                case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
+
+                    break;
+
+                default:
+
+                    break;
+
+            }
+
+        }
+
+    };
+
 }

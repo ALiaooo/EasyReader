@@ -21,7 +21,7 @@ import java.util.List;
 public class DBUtility {
 
     /**
-     * ç¼“å­˜æ¨¡æ¿é—®å·
+     * »º´æÄ£°åÎÊ¾í
      * @param surveyList
      */
     public static void saveTemplateSurvey(List<Survey> surveyList){
@@ -46,7 +46,7 @@ public class DBUtility {
 
 
     /**
-     * å°†å¼€å§‹ç­”é¢˜æ—¶é—´ä¿å­˜åˆ°å·²ç­”é—®å·é‡Œ
+     * ½«¿ªÊ¼´ğÌâÊ±¼ä±£´æµ½ÒÑ´ğÎÊ¾íÀï
      */
     public static void saveTimeStampToAnsweredQuestionaire(){
         AnsweredQuestionnaire answeredQuestionnaire = new AnsweredQuestionnaire();
@@ -55,7 +55,7 @@ public class DBUtility {
     }
 
     /**
-     * å•é“é¢˜å­˜å‚¨åˆ°å·²ç­”é—®å·ä¸­
+     * µ¥µÀÌâ´æ´¢µ½ÒÑ´ğÎÊ¾íÖĞ
      */
     public static void saveSimpleToAnsweredQeustionnaire(){
         AnsweredQuestionnaire answeredQuestionnaire = new AnsweredQuestionnaire();
@@ -65,12 +65,9 @@ public class DBUtility {
     }
 
     /**
-     * æ‰¹é‡å­˜å‚¨åˆ°å·²ç­”é—®å·ä¸­
+     * ÅúÁ¿´æ´¢µ½ÒÑ´ğÎÊ¾íÖĞ
      */
-    public static void saveMultyToAnsweredQeustionnaire(){
-        AnsweredQuestionnaire answeredQuestionnaire = new AnsweredQuestionnaire();
-//        answeredQuestionnaire.;
-
-        answeredQuestionnaire.save();
+    public static void saveMultyToAnsweredQeustionnaire(List<AnsweredQuestionnaire> answeredQuestionnaireList){
+        DataSupport.saveAll(answeredQuestionnaireList);
     }
 }
