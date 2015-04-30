@@ -34,6 +34,7 @@ import java.util.List;
 
 /**
  * Created by 丽双 on 2015/4/24.
+ * 先请求网络，如果没有网络，则从数据库中获取数据
  */
 public class NewSurveysActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
 
@@ -99,23 +100,16 @@ public class NewSurveysActivity extends ActionBarActivity implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Pager pager = mSurveyList.get(position);
+        pager.setBeginTime(DateUtil.getCurrentDate());
+
         Intent intent = new Intent(NewSurveysActivity.this, SurveyQuestionActivity.class);
-        intent.putExtra("time", DateUtil.getCurrentDate());
+//        intent.putExtra("time", DateUtil.getCurrentDate());
+        intent.putExtra(Contents.SURVEY_OBG, pager);
         startActivity(intent);
         /**
          * 点击开始答题的时候，将起始时间保存到已答问卷表里
          */
-//        DBUtility.saveTimeStampToAnsweredQuestionaire();//
-//        DBUtility.saveTimeStampToAnsweredQuestionaire();
-
-
-        /*Button beginAnswer = (Button) view.findViewById(R.id.btn_item_new_survey_begin);
-        beginAnswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NewSurveysActivity.this, SurveyQuestionActivity.class);
-                startActivity(intent);
-            }
-        });*/
     }
 }

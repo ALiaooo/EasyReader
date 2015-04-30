@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by 丽双 on 2015/4/23.
+ * 题库
  */
 public class Question extends DataSupport implements Serializable {
     private static final long serialVersionUID = 1L;

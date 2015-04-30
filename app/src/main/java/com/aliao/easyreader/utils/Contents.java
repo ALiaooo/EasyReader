@@ -10,5 +10,8 @@ public class Contents {
 
     public static final String QUESTION_OBG = "questionObject";
     public static final String LOGIC_OBG = "logicObject";
+    public static final String SURVEY_OBG = "surveyObject";
     public static final String ANSWER_OPTION_ID = "answerOptionId";
+
+    public static final String UNFINISHED = "1";
 }

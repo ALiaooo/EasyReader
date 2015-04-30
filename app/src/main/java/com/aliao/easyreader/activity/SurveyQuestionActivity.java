@@ -12,11 +12,14 @@ import android.view.KeyEvent;
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.QuestionPagerAdapter;
 import com.aliao.easyreader.entity.Answer;
+import com.aliao.easyreader.entity.AnsweredPager;
 import com.aliao.easyreader.entity.AnsweredQuestionnaire;
 import com.aliao.easyreader.entity.Logic;
+import com.aliao.easyreader.entity.Pager;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.entity.SurveyResult;
 import com.aliao.easyreader.entity.Survey;
+import com.aliao.easyreader.entity.UserInfo;
 import com.aliao.easyreader.fragment.AnswerQuestionFragment;
 import com.aliao.easyreader.utils.Contents;
 import com.aliao.easyreader.utils.DBUtility;
@@ -48,14 +51,16 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
     private int mCurrentIndex = 0;//当前页卡编号,滑动到哪页，该页就是当前页
     private int mLastIndex;//做到的最后一道题的页数
     private String mTimeStamp;
+    private Pager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_answer_survey);
+        pager = (Pager) getIntent().getSerializableExtra(Contents.SURVEY_OBG);
 
-        mTimeStamp = getIntent().getExtras().getString("time");
+//        mTimeStamp = getIntent().getExtras().getString("time");
 
         initViews();
         initDatas();
@@ -109,7 +114,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         GsonRequest<SurveyResult> request = new GsonRequest<SurveyResult>(Contents.SURVEY_DETAIL_LIST_REQUEST_URL, SurveyResult.class, new Response.Listener<SurveyResult>() {
             @Override
             public void onResponse(SurveyResult response) {
-                mSurveyList.addAll(response.getSurveys());
+//                mSurveyList.addAll(response.getSurvey());
                 mQuestionList.addAll(mSurveyList.get(0).getQuestions());
                 for (int i = 0; i<mQuestionList.size(); i++){
                     mJumpLogicList.addAll(mQuestionList.get(i).getLogics());
@@ -275,8 +280,25 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
 
                 case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
 
+                    //将未完成的问卷保存到数据库中
+                    pager.setStatus(Contents.UNFINISHED);
+                    pager.save();
+
+                    //先把user查出来，最后在save
+
+
+                    /*for (Question question:mQuestionList) {
+                        AnsweredPager answeredPager = new AnsweredPager();
+                        answeredPager.setIQuestionID(question.getiID());
+                        answeredPager.setSAnswers(question.getAnswerOptionId());
+                    }*/
+                    // select * from question where
+//                    DBUtility.saveUnfinishedSurveyToDB(pager);
+                  /*  UserInfo userInfo = new UserInfo();
+                    userInfo.getPagers().add();*/
+
                     //先保存到数据库中
-                    List<AnsweredQuestionnaire> answeredQuestionnaireList = new ArrayList<>();
+               /*     List<AnsweredQuestionnaire> answeredQuestionnaireList = new ArrayList<>();
                     for (Question question:mQuestionList){
                         AnsweredQuestionnaire aQusetion = new AnsweredQuestionnaire();
                         aQusetion.setiID(question.getiID());
@@ -303,7 +325,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
                         answeredQuestionnaireList.add(aQusetion);
                     }
 
-                    DBUtility.saveMultyToAnsweredQeustionnaire(answeredQuestionnaireList);
+                    DBUtility.saveMultyToAnsweredQeustionnaire(answeredQuestionnaireList);*/
 
                     finish();
 

@@ -37,7 +37,7 @@ public class NewSurveyAdapter extends BaseListAdapter<Pager> {
         }
 
         if (null != mDataList) {
-            holder.title.setText(mSurveyList.get(position).getTitle());
+            holder.title.setText(mSurveyList.get(position).getsTitle());
         }
 
         return convertView;

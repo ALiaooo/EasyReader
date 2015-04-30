@@ -10,14 +10,14 @@ import java.util.List;
 public class Survey extends DataSupport {
     private Pager info;//调查问卷基本信息
     private List<Question> questions;
-    private User user;
+    private UserInfo userInfo;
 
-    public User getUser() {
-        return user;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     public List<Question> getQuestions() {

@@ -11,7 +11,8 @@ import com.aliao.easyreader.utils.L;
 import org.litepal.crud.DataSupport;
 
 /**
- * Created by ÀöË« on 2015/4/29.
+ * Created by ä¸½åŒ on 2015/4/29.
+ *
  */
 public class UnfinishedSurveyActivity extends ActionBarActivity {
 
@@ -20,7 +21,7 @@ public class UnfinishedSurveyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unfinished_survey);
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_unfinished_survey_topbar);
-        toolbar.setTitle("Î´Íê³ÉÎÊ¾í");
+        toolbar.setTitle("æœªå®Œæˆé—®å·");
         setSupportActionBar(toolbar);
 
         getUnfinishedSurveyDataFromDB();
@@ -28,7 +29,6 @@ public class UnfinishedSurveyActivity extends ActionBarActivity {
     }
 
     private void getUnfinishedSurveyDataFromDB() {
-        //Ä³ÓÃ»§ÏÂµÄÎ´´ğÎÊ¾í
         AnsweredQuestionnaire answeredQuestionnaire = DataSupport.find(AnsweredQuestionnaire.class, 1);
         L.d("title = "+answeredQuestionnaire.getQuestionTilte());
     }

@@ -6,10 +6,10 @@ import com.aliao.easyreader.entity.Logic;
 import com.aliao.easyreader.entity.Pager;
 import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.entity.Survey;
+import com.aliao.easyreader.entity.UserInfo;
 
 import org.litepal.crud.DataSupport;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,32 +21,51 @@ import java.util.List;
 public class DBUtility {
 
     /**
-     * »º´æÄ£°åÎÊ¾í
+     * ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ê¾ï¿½
      * @param surveyList
      */
-    public static void saveTemplateSurvey(List<Survey> surveyList){
+    public static void saveTemplateSurvey(Survey survey){
 
         List<Question> questionList = new ArrayList<>();
         List<Answer> optionList  = new ArrayList<>();
         List<Pager> pagerList  = new ArrayList<>();
         List<Logic> logicList  = new ArrayList<>();
-        for (int i = 0; i<surveyList.size(); i++){
+     /*   for (int i = 0; i<surveyList.size(); i++){
             questionList.addAll(surveyList.get(i).getQuestions());
             pagerList.add(surveyList.get(i).getInfo());
-        }
+        }*/
+        questionList.addAll(survey.getQuestions());
+        pagerList.add(survey.getInfo());
         for (int i = 0; i<questionList.size(); i++){
             optionList.addAll(questionList.get(i).getOptions());
             logicList.addAll(questionList.get(i).getLogics());
         }
+        //å»ºç«‹pagerä¸questionçš„ä¸€å¯¹å¤šå…³è”
+        for (Question question: questionList){
+            survey.getInfo().getQuestions().add(question);
+        }
+
+        //æ·»åŠ ç”¨æˆ·ä¿¡æ¯
         DataSupport.saveAll(optionList);
         DataSupport.saveAll(logicList);
         DataSupport.saveAll(questionList);
         DataSupport.saveAll(pagerList);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setiUserID("10138");
+        userInfo.setsUserName("adminF1");
+        userInfo.setsRealName("adminè®¿é—®å‘˜1(å‹¿åˆ )");
+        userInfo.setdPermissionEndTime("2015/9/2 0:00:00");
+        //å»ºç«‹userä¸pagerçš„ä¸€å¯¹å¤šå…³è”
+        userInfo.getPagers().add(survey.getInfo());
+      /*  for (Pager pager:pagerList){
+            userInfo.getPagers().add(pager);
+        }*/
+        userInfo.save();
     }
 
 
     /**
-     * ½«¿ªÊ¼´ğÌâÊ±¼ä±£´æµ½ÒÑ´ğÎÊ¾íÀï
+     * ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä±£ï¿½æµ½ï¿½Ñ´ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½
      */
     public static void saveTimeStampToAnsweredQuestionaire(){
         AnsweredQuestionnaire answeredQuestionnaire = new AnsweredQuestionnaire();
@@ -55,7 +74,7 @@ public class DBUtility {
     }
 
     /**
-     * µ¥µÀÌâ´æ´¢µ½ÒÑ´ğÎÊ¾íÖĞ
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½
      */
     public static void saveSimpleToAnsweredQeustionnaire(){
         AnsweredQuestionnaire answeredQuestionnaire = new AnsweredQuestionnaire();
@@ -65,9 +84,16 @@ public class DBUtility {
     }
 
     /**
-     * ÅúÁ¿´æ´¢µ½ÒÑ´ğÎÊ¾íÖĞ
+     * ï¿½ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½
      */
     public static void saveMultyToAnsweredQeustionnaire(List<AnsweredQuestionnaire> answeredQuestionnaireList){
         DataSupport.saveAll(answeredQuestionnaireList);
+    }
+
+    /**
+     * å°†æœªå®Œæˆçš„é—®å·ä¿å­˜åˆ°dbä¸­
+     */
+    public static void saveUnfinishedSurveyToDB(Pager pager){
+        pager.save();
     }
 }

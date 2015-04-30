@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by ÀöË« on 2015/4/29.
+ * Created by ä¸½åŒ on 2015/4/29.
  */
 public class DateUtil {
     public static String getCurrentDate(){

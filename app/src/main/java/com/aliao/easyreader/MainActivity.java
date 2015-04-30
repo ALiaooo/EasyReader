@@ -64,7 +64,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         SQLiteDatabase db = Connector.getDatabase();
 
-        L.d("date = "+ DateUtil.getCurrentDate());
         initViews();
         requestDatas();
 
@@ -81,65 +80,59 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 //        public static final String SURVEY_DETAIL_LIST_REQUEST_URL = "http://csis.fdc.test.fang.com/SurveyInterface/GetSurveysDetail.ashx?iUserID=10138&sSurveyIDs=700";
 
+//      "http://csis.fdc.test.fang.com/SurveyInterface/GetSurveysDetail.ashx?iUserID=10138&sSurveyIDs=700";
+
         String userId = "10138";
-        String encrypt;
+        String surveyId = "700";
+        //MD5加密
+        String encrypt = StringUtils.getMD5Str(userId+surveyId+"csis_app");
         try {
             //参数加密
             userId = URLEncoder.encode(DES.encryptDES(userId, "csis_app"), ENCODING);
-            L.d("userId = "+userId);
+            surveyId = URLEncoder.encode(DES.encryptDES(surveyId, "csis_app"), ENCODING);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        //MD5加密
-        encrypt = StringUtils.getMD5Str(userId + "csis_app");
-        L.d("encrypt = "+encrypt);
-        String url = "http://csis.fdc.test.fang.com/SurveyInterface/GetSurveys.ashx?iUserID="+userId+"&encrypt"+encrypt;
+        String url = "http://csis.fdc.test.fang.com/SurveyInterface/App_GetSurveysDetail.ashx?iUserID="+userId+"&iSurveyID="+surveyId+"&encrypt="+encrypt;
         L.d("url = "+url);
 
-        GsonRequest<SurveyResult> request = new GsonRequest<SurveyResult>(Contents.SURVEY_DETAIL_LIST_REQUEST_URL, SurveyResult.class, new Response.Listener<SurveyResult>() {
+
+        GsonRequest<SurveyResult> request = new GsonRequest<SurveyResult>(url, SurveyResult.class, new Response.Listener<SurveyResult>() {
             @Override
             public void onResponse(SurveyResult response) {
-                mSurveyList.addAll(response.getSurveys());
-                for (int i = 0; i<mSurveyList.size(); i++){
-                    mQuestionList.addAll(mSurveyList.get(i).getQuestions());
-                    mPagerList.add(mSurveyList.get(i).getInfo());
-                }
-                L.d("mQuestionList = " + mQuestionList.size());
-                for (int i = 0; i<mQuestionList.size(); i++){
-                    mAnswerOptionList.addAll(mQuestionList.get(i).getOptions());
-                    mLogicList.addAll(mQuestionList.get(i).getLogics());
-                }
+//                mSurveyList.addAll(response.getSurvey());
+                L.d("question size"+response.getSurvey().getQuestions().size());
                 /**
                  * 缓存到数据库中
+                 * 只存储新增的问卷，同一份问卷不再存储
                  */
-                DBUtility.saveTemplateSurvey(mSurveyList);
-//                saveDatasToDB();
+//                saveDatasToDB(response.getSurvey());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                L.d("= onErrorResponse = ");
             }
         });
 
         VolleySingleton.getInstance(this).addToRequestQueue(request);
-
-        DateFormat dateTimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String strBeginDate = dateTimeformat.format(new Date());
-        L.d("date = " + strBeginDate);
-
     }
 
     /**
      * 缓存到数据库中
+     * @param survey
      */
-    private void saveDatasToDB() {
-        DataSupport.saveAll(mAnswerOptionList);//��
-        DataSupport.saveAll(mLogicList);//����
-        DataSupport.saveAll(mQuestionList);//����
-        DataSupport.saveAll(mPagerList);
-//        DataSupport.saveAll(mSurveyList);
+    private void saveDatasToDB(final Survey survey) {
+
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                L.d("= saveDatasToDB = ");
+                DBUtility.saveTemplateSurvey(survey);
+            }
+        }.start();
     }
 
 
