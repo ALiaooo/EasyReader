@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.AnswerOptionsAdapter;
 import com.aliao.easyreader.entity.Answer;
+import com.aliao.easyreader.entity.AnsweredQuestion;
 import com.aliao.easyreader.entity.AnsweredQuestionnaire;
 import com.aliao.easyreader.entity.Logic;
 import com.aliao.easyreader.entity.Question;
@@ -33,6 +34,7 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
 
     private TextView mTvQTitle;
     private Question mQuestion;
+    private AnsweredQuestion mAnsweredQuestion;
     private ListView mLvAnswerOption;
     private AnswerOptionsAdapter mAdapter;
     private OnAnswerQuestionFragmentInteractionListener mListener;
@@ -43,7 +45,7 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static AnswerQuestionFragment newInstance(Question question) {
+    public static AnswerQuestionFragment newInstance(AnsweredQuestion question) {
         AnswerQuestionFragment fragment = new AnswerQuestionFragment();
         Bundle args = new Bundle();
         args.putSerializable(Contents.QUESTION_OBG, question);
@@ -55,7 +57,8 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (null != getArguments()){
-            mQuestion = (Question) getArguments().getSerializable(Contents.QUESTION_OBG);
+//            mQuestion = (Question) getArguments().getSerializable(Contents.QUESTION_OBG);
+            mAnsweredQuestion = (AnsweredQuestion) getArguments().getSerializable(Contents.QUESTION_OBG);
         }
     }
 
@@ -67,7 +70,9 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
     }
 
     private void initViews(View view) {
+        mQuestion = mAnsweredQuestion.getQuestion();
         mAnswerOptionList = new ArrayList<>();
+//        mAnswerOptionList.addAll(mQuestion.getAnswerOptions());//题目选项
         mAnswerOptionList.addAll(mQuestion.getAnswerOptions());//题目选项
         mJumpLogicList = new ArrayList<>();
         mJumpLogicList.addAll(mQuestion.getLogicList());
@@ -86,9 +91,9 @@ public class AnswerQuestionFragment extends Fragment implements AdapterView.OnIt
 
         //保存该题答案和位置
         String answerOptionId = mAnswerOptionList.get(position).getiID();
-        mQuestion.setAnswerOptionId(answerOptionId);
-        mQuestion.setOptionOrder(position);
-        L.d("mQuestion.getAnswerOptionId() = " + mQuestion.getAnswerOptionId());
+        mAnsweredQuestion.setSAnswers(answerOptionId);
+
+//        mQuestion.setOptionOrder(position);
         //将question返回
         Bundle bundle = new Bundle();
         bundle.putSerializable(Contents.QUESTION_OBG, mQuestion);

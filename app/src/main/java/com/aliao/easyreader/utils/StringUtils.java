@@ -5,18 +5,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by ÀöË« on 2015/4/29.
+ * Created by ä¸½åŒ on 2015/4/29.
  */
 public class StringUtils {
 
 
-    /**
-     * »ñµÃMD5¼ÓÃÜ×Ö·û´®
-     *
-     * @param str
-     *            ×Ö·û´®
-     * @return
-     */
+
     public static String getMD5Str(String str) {
         MessageDigest messageDigest = null;
         try {

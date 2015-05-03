@@ -107,7 +107,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                  * 缓存到数据库中
                  * 只存储新增的问卷，同一份问卷不再存储
                  */
-//                saveDatasToDB(response.getSurvey());
+                saveDatasToDB(response.getSurvey());
             }
         }, new Response.ErrorListener() {
             @Override

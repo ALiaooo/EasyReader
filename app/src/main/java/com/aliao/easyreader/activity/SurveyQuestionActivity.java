@@ -2,10 +2,12 @@ package com.aliao.easyreader.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -13,6 +15,7 @@ import com.aliao.easyreader.R;
 import com.aliao.easyreader.adapter.QuestionPagerAdapter;
 import com.aliao.easyreader.entity.Answer;
 import com.aliao.easyreader.entity.AnsweredPager;
+import com.aliao.easyreader.entity.AnsweredQuestion;
 import com.aliao.easyreader.entity.AnsweredQuestionnaire;
 import com.aliao.easyreader.entity.Logic;
 import com.aliao.easyreader.entity.Pager;
@@ -44,14 +47,12 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
     private List<Survey> mSurveyList;
     private List<Question> mQuestionList;
     private List<Logic> mJumpLogicList;
-    private Logic mJumpLogic;
-    private List<Question> mRealTimeQuestionList;
     private Question mCurrentQuestion;
-    private List<AnsweredQuestionnaire> mAnsweredQuestionList;
     private int mCurrentIndex = 0;//当前页卡编号,滑动到哪页，该页就是当前页
     private int mLastIndex;//做到的最后一道题的页数
     private String mTimeStamp;
     private Pager pager;
+    private List<AnsweredQuestion> mAnsweredQuestionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         setContentView(R.layout.activity_answer_survey);
         pager = (Pager) getIntent().getSerializableExtra(Contents.SURVEY_OBG);
 
-//        mTimeStamp = getIntent().getExtras().getString("time");
+        mTimeStamp = getIntent().getExtras().getString("time");
 
         initViews();
         initDatas();
@@ -72,7 +73,6 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_question_topbar);
         toolbar.setTitle("答题");
         setSupportActionBar(toolbar);
-        mAnsweredQuestionList = new ArrayList<>();
         mSurveyList = new ArrayList<>();
         mQuestionList = new ArrayList<>();
         mJumpLogicList = new ArrayList<>();
@@ -84,7 +84,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         /**
          * 1.从数据库中取出第一道题
          */
-        mCurrentQuestion = DataSupport.findFirst(Question.class);
+//        mCurrentQuestion = DataSupport.findFirst(Question.class);
                 /**
                  * 从数据库中取出第一道题的答案选项
                  */
@@ -96,16 +96,29 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         /**
          * 2.添加到数据源中
          */
-        mQuestionList.add(mCurrentQuestion);
+//        mQuestionList.add(mCurrentQuestion);
 
         /**
          * 3.setAdapter
          */
+//        setDatas();
+
+        /**
+         * 1.从数据库中取出第一道题
+         */
+        mCurrentQuestion = DataSupport.findFirst(Question.class);
+        AnsweredQuestion answeredQuestion = new AnsweredQuestion();
+        answeredQuestion.setIQuestionID(mCurrentQuestion.getiID());
+        answeredQuestion.setQuestion(mCurrentQuestion);
+        mAnsweredQuestionList.add(answeredQuestion);
+
         setDatas();
+
     }
 
     private void setDatas() {
-        mPagerAdapter = new QuestionPagerAdapter(getSupportFragmentManager(), mQuestionList);
+//        mPagerAdapter = new QuestionPagerAdapter(getSupportFragmentManager(), mQuestionList);
+        mPagerAdapter = new QuestionPagerAdapter(getSupportFragmentManager(), mAnsweredQuestionList);
         mViewPager.setAdapter(mPagerAdapter);
     }
 
@@ -150,11 +163,11 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
          * 实时构建答题列表
          */
 
-        if (null != mJumpLogic){//没有逻辑跳转，继续下一题
-            L.d("滑动 跳转到下一题:"+mJumpLogic.getSkipTo());
-        }else {//有逻辑跳转
-//            mRealTimeQuestionList.add()
-        }
+//        if (null != mJumpLogic){//没有逻辑跳转，继续下一题
+//            L.d("滑动 跳转到下一题:"+mJumpLogic.getSkipTo());
+//        }else {//有逻辑跳转
+////            mRealTimeQuestionList.add()
+//        }
         /**
          * 其实不用判断选择了哪个选项，直接遍历逻辑列表查找
          */
@@ -162,12 +175,13 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
             //获取
             mCurrentQuestion.getLogicList().get(i);
         }
+
         String questionId;
         String isSelectedAnswerId;
         String skipTo;
         for (Logic logic:mCurrentQuestion.getLogicList()){
             questionId = logic.getiQuestionID();
-            isSelectedAnswerId = logic.getiSelectAnswers();
+            isSelectedAnswerId = logic.getiSelectAnswer();
             //从已答问卷表里判断做过的题目里是否有questionId且答案选项为isSelectedAnserId,如果有break
 //            if ()
         }
@@ -181,7 +195,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
 
         //如果往回滑，可能是去改题，如果发现修改了答案，那么更新数据源
         //往回滑，当前的对象要变成当前页的
-        mCurrentQuestion = mQuestionList.get(position);
+//        mCurrentQuestion = mQuestionList.get(position);
         L.d("往回滑到当前页，之前选的答案选项getAnswerOptionId = "+mCurrentQuestion.getAnswerOptionId());
      /*   if (){
 
@@ -210,12 +224,41 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         }
 
         //打印每一题的答案选项位置
-        for (int i =0; i<mQuestionList.size(); i++){
-            L.d(i+"-getOptionOrder = " + mQuestionList.get(i).getOptionOrder());
+//        for (int i =0; i<mQuestionList.size(); i++){
+//            L.d(i+"-getOptionOrder = " + mQuestionList.get(i).getOptionOrder());
+//        }
+
+        //取题-判断是否有逻辑跳转
+        mJumpLogicList.addAll(mCurrentQuestion.getLogicList());
+        String skipToQuestionId = null;
+        for (AnsweredQuestion answeredQuestion:mAnsweredQuestionList){
+            for (Logic logic:mJumpLogicList){
+
+                L.d("逻辑循环aqId = "+answeredQuestion.getIQuestionID()+":logicId = "+logic.getiQuestionID()+"|a="+answeredQuestion.getSAnswers()+":s="+logic.getiSelectAnswer());
+                if (answeredQuestion.getIQuestionID().equals(logic.getiQuestionID())
+                        && answeredQuestion.getSAnswers().equals(logic.getiSelectAnswer())){
+                    skipToQuestionId = logic.getiSkipTo();
+                    break;
+                }
+            }
+        }
+        Question nextQuestion;
+        if (TextUtils.isEmpty(skipToQuestionId)){
+            //直接取当前题目的下一题
+            nextQuestion = DataSupport.find(Question.class, Integer.parseInt(mCurrentQuestion.getQNum())+1);
+            L.d("nextQuestion title = "+nextQuestion.getQuestionTilte());
+        }else {
+            //取逻辑跳转中指定的题目
+            nextQuestion = DataSupport.where("iID = ?", skipToQuestionId).find(Question.class).get(0);
+            L.d("jumpQuestion title = "+nextQuestion.getQuestionTilte());
         }
 
-        //数据源添加下一题，只添加一次
-        Question nextQuestion = DataSupport.find(Question.class, Integer.parseInt(mCurrentQuestion.getQNum())+1);
+        //数据源添加下一题，只添加一次(直接用currentQuestion接收数据就行不用再new 一个next了)
+//        Question nextQuestion = DataSupport.find(Question.class, Integer.parseInt(mCurrentQuestion.getQNum())+1);
+        AnsweredQuestion answeredQuestion = new AnsweredQuestion();
+        answeredQuestion.setIQuestionID(nextQuestion.getiID());
+        answeredQuestion.setQuestion(nextQuestion);
+        mAnsweredQuestionList.add(answeredQuestion);
 
         if (!mQuestionList.contains(nextQuestion))
             mQuestionList.add(nextQuestion);
@@ -224,8 +267,8 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         mCurrentQuestion = nextQuestion;
 
 
-        L.d("下一题的题号 = " + mCurrentQuestion.getQNum());
-        L.d("当前题目数 size = " + mQuestionList.size());
+//        L.d("当前的题号 = " + mCurrentQuestion.getQNum());
+//        L.d("当前题目数 size = " + mQuestionList.size());
 
 
         //数据源变化，更新
@@ -234,7 +277,7 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
         //自动跳到下一题
         mLastIndex = mCurrentIndex+1;
         mViewPager.setCurrentItem(mLastIndex, true);
-        L.d("click mLastIndex = " + mLastIndex);
+//        L.d("click mLastIndex = " + mLastIndex);
     }
 
 
@@ -280,11 +323,63 @@ public class SurveyQuestionActivity extends ActionBarActivity implements ViewPag
 
                 case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
 
-                    //将未完成的问卷保存到数据库中
-                    pager.setStatus(Contents.UNFINISHED);
+                    //将未完成的问卷保存到数据库答卷表里
+                    AnsweredPager answeredPager = new AnsweredPager();
+                    answeredPager.setBeginTime(mTimeStamp);
+                    answeredPager.setStatus(Contents.UNFINISHED);
+                    answeredPager.setPagerId(pager.getiID());
+                    answeredPager.setAnsweredQuestions(mAnsweredQuestionList);//答卷表关联答题表
+                    answeredPager.save();
+
+                    //关联用户表,添加关联以后一定要保存！！
+                    List<UserInfo> userInfos = DataSupport.where("iUserID = ?", "10138").find(UserInfo.class);
+                    UserInfo userInfo = userInfos.get(0);
+                    userInfo.getAnsweredPagers().add(answeredPager);
+                    userInfo.save();
+
+                    //关联问卷表
+                    List<Pager> pagers = DataSupport.where("iID = ?", pager.getiID()).find(Pager.class);
+                    Pager pager = pagers.get(0);
+                    pager.getAnsweredPagers().add(answeredPager);
                     pager.save();
 
-                    //先把user查出来，最后在save
+                    //保存已答题目到答题表
+                    DataSupport.saveAll(mAnsweredQuestionList);
+
+
+
+                    //------------------------------------------------------------------------------
+                    //将已答的题目保存到答卷表里
+//                    List<AnsweredQuestionnaire> answeredQuestionnaireList = new ArrayList<>();
+//                    for (Question question:mQuestionList) {
+//                        AnsweredQuestionnaire aQusetion = new AnsweredQuestionnaire();
+//                        aQusetion.setiID(question.getiID());
+//                        aQusetion.setQNum(question.getQNum());
+//                    }
+
+                    //关联该未完成问卷
+//                    for (AnsweredQuestionnaire answeredQuestionnaire:answeredQuestionnaireList){
+//                        pager.getAnsweredQuestionnaires().add(answeredQuestionnaire);
+//                    }
+
+                    //将未完成的问卷保存到数据库中
+//                    pager.setStatus(Contents.UNFINISHED);
+//                    pager.save();
+
+                    //先把user查出来，设置关联关系，最后再save
+//                    long id = 0;
+//                    Cursor cursor = DataSupport.findBySQL("select * from userinfo where iUserID=?","10138");
+//                    if (cursor.moveToFirst()) {
+//                        do {
+//                            id = cursor.getLong(cursor.getColumnIndex("id"));
+//                        } while (cursor.moveToNext());
+//                    }
+//
+//                    UserInfo userInfo = DataSupport.find(UserInfo.class,id);
+//                    userInfo.getPagers().add(pager);
+//                    userInfo.save();
+
+                    //------------------------------------------------------------------------------
 
 
                     /*for (Question question:mQuestionList) {

@@ -105,7 +105,7 @@ public class NewSurveysActivity extends ActionBarActivity implements AdapterView
         pager.setBeginTime(DateUtil.getCurrentDate());
 
         Intent intent = new Intent(NewSurveysActivity.this, SurveyQuestionActivity.class);
-//        intent.putExtra("time", DateUtil.getCurrentDate());
+        intent.putExtra("time", DateUtil.getCurrentDate());
         intent.putExtra(Contents.SURVEY_OBG, pager);
         startActivity(intent);
         /**

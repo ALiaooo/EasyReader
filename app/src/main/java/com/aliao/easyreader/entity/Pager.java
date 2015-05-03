@@ -20,10 +20,19 @@ public class Pager extends DataSupport implements Serializable {
     private String sCompanyName;//服务企业
     private String dUpdateTime;
     private List<Question> questions = new ArrayList<>();
-    private List<AnsweredQuestionnaire> answeredQuestionnaires;
+    private List<AnsweredQuestionnaire> answeredQuestionnaires = new ArrayList<>();
     private UserInfo userInfo;//与用户是多对一的关系
     private String status;//0模板问卷 1未完成 2已完成待提交
     private String beginTime;//开始答题时间
+    private List<AnsweredPager> answeredPagers = new ArrayList<>();//与答卷是一对多关系
+
+    public void setAnsweredPagers(List<AnsweredPager> answeredPagers) {
+        this.answeredPagers = answeredPagers;
+    }
+
+    public List<AnsweredPager> getAnsweredPagers() {
+        return answeredPagers;
+    }
 
     public String getBeginTime() {
         return beginTime;
@@ -121,4 +130,7 @@ public class Pager extends DataSupport implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
+
 }

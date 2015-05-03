@@ -1,15 +1,34 @@
 package com.aliao.easyreader.entity;
 
+import org.litepal.crud.DataSupport;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by 丽双 on 2015/4/30.
- * 答卷
+ * 答卷（表/已问卷，包括未完成和待提交两种状态）
  */
-public class AnsweredPager {
+public class AnsweredPager extends DataSupport implements Serializable {
     private long id;
-    private String IQuestionID;//问题ID
-    private String SAnswers;//回答选项ID
-    private String SAnswersNote;//开放题或开放选项
-    private String DAddTime;//问题答题时间2014-08-18 15:02:38”
+    private String userId;//用户id
+    private String pagerId;//问卷id
+    private String status;//都是未提交问卷，0未完成 1完成
+    private String beginTime;//开始答题时间
+    private UserInfo userInfo;//用户与答卷是一对多关系
+    private Pager pager;//模板问卷与答卷是一对多关系
+
+
+    public List<AnsweredQuestion> getAnsweredQuestions() {
+        return DataSupport.where("answeredpager_id = ?", String.valueOf(id)).find(AnsweredQuestion.class);
+    }
+
+    public void setAnsweredQuestions(List<AnsweredQuestion> answeredQuestions) {
+        this.answeredQuestions = answeredQuestions;
+    }
+
+    private List<AnsweredQuestion> answeredQuestions = new ArrayList<>();//与答题表是一对多关系
 
     public long getId() {
         return id;
@@ -19,35 +38,51 @@ public class AnsweredPager {
         this.id = id;
     }
 
-    public String getIQuestionID() {
-        return IQuestionID;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setIQuestionID(String IQuestionID) {
-        this.IQuestionID = IQuestionID;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getSAnswers() {
-        return SAnswers;
+    public String getStatus() {
+        return status;
     }
 
-    public void setSAnswers(String SAnswers) {
-        this.SAnswers = SAnswers;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getSAnswersNote() {
-        return SAnswersNote;
+    public String getPagerId() {
+        return pagerId;
     }
 
-    public void setSAnswersNote(String SAnswersNote) {
-        this.SAnswersNote = SAnswersNote;
+    public void setPagerId(String pagerId) {
+        this.pagerId = pagerId;
     }
 
-    public String getDAddTime() {
-        return DAddTime;
+    public String getBeginTime() {
+        return beginTime;
     }
 
-    public void setDAddTime(String DAddTime) {
-        this.DAddTime = DAddTime;
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public Pager getPager() {
+        return DataSupport.where("iID = ?", pagerId).find(Pager.class).get(0);
+    }
+
+    public void setPager(Pager pager) {
+        this.pager = pager;
     }
 }

@@ -9,6 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"/>
+    <TextView
+        android:id="@+id/tv_item_second_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_item_new_survey_title"
+        android:layout_marginTop="10dp"
+        />
     <Button
         android:id="@+id/btn_item_new_survey_begin"
         android:layout_width="wrap_content"

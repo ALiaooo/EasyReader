@@ -1,31 +1,30 @@
 package com.aliao.easyreader.adapter;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.aliao.easyreader.entity.AnsweredQuestion;
-import com.aliao.easyreader.entity.Question;
 import com.aliao.easyreader.fragment.AnswerQuestionFragment;
+import com.aliao.easyreader.fragment.UnfinishedQuestionFragment;
 
 import java.util.List;
 
 /**
- * Created by 丽双 on 2015/4/24.
+ * Created by liaolishuang on 15/5/3.
  */
-public class QuestionPagerAdapter extends FragmentPagerAdapter {
+public class UnfinishedQuestionAdapter extends FragmentPagerAdapter {
 
     private List<AnsweredQuestion> mQuestionList;
 
-    public QuestionPagerAdapter(FragmentManager fm, List<AnsweredQuestion> list) {
+    public UnfinishedQuestionAdapter(FragmentManager fm, List<AnsweredQuestion> list) {
         super(fm);
         mQuestionList = list;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return AnswerQuestionFragment.newInstance(mQuestionList.get(position));
+        return UnfinishedQuestionFragment.newInstance(mQuestionList.get(position));
     }
 
     @Override

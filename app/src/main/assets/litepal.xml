@@ -2,7 +2,7 @@
 <litepal>
     <dbname value="SurveyDemo"/>
 
-    <version value="11"></version>
+    <version value="12"></version>
 
     <list>
         <mapping class="com.aliao.easyreader.entity.UserInfo"></mapping>
@@ -10,7 +10,8 @@
         <mapping class="com.aliao.easyreader.entity.Question"></mapping>
         <mapping class="com.aliao.easyreader.entity.Answer"></mapping>
         <mapping class="com.aliao.easyreader.entity.Logic"></mapping>
-        <mapping class="com.aliao.easyreader.entity.AnsweredQuestionnaire"></mapping>
+        <mapping class="com.aliao.easyreader.entity.AnsweredPager"></mapping>
+        <mapping class="com.aliao.easyreader.entity.AnsweredQuestion"></mapping>
     </list>
 
 </litepal>

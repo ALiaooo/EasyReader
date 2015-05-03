@@ -22,6 +22,7 @@
         <activity android:name=".activity.NewSurveysActivity" />
         <activity android:name=".activity.SurveyQuestionActivity" />
         <activity android:name=".activity.UnfinishedSurveyActivity" />
+        <activity android:name=".activity.UnfinishedQuestionActivity" />
         <activity
             android:name=".activity.TestActivity"
             android:label="@string/title_activity_test" >

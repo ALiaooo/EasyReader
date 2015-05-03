@@ -12,7 +12,7 @@ public class Logic extends DataSupport implements Serializable {
     private long id;
     private String iID;//逻辑主键id
     private String iQuestionID;//问卷问题id------->?
-    private String iSelectAnswers;//回答的选项
+    private String iSelectAnswer;//回答的选项iSelectAnswers
     private String iSkipFrom;//从哪题开始跳转
     private String iSkipTo;//跳转至哪题
     private String iLogicType;//跳转类型：1.单个跳转 3.直接结束 4.结束问卷并提交-------？
@@ -35,8 +35,8 @@ public class Logic extends DataSupport implements Serializable {
         return id;
     }
 
-    public String getSelectAnswers() {
-        return iSelectAnswers;
+    public String getSelectAnswer() {
+        return iSelectAnswer;
     }
 
     public String getSkipTo() {
@@ -59,12 +59,12 @@ public class Logic extends DataSupport implements Serializable {
         this.iQuestionID = iQuestionID;
     }
 
-    public String getiSelectAnswers() {
-        return iSelectAnswers;
+    public String getiSelectAnswer() {
+        return iSelectAnswer;
     }
 
-    public void setiSelectAnswers(String iSelectAnswers) {
-        this.iSelectAnswers = iSelectAnswers;
+    public void setiSelectAnswer(String iSelectAnswer) {
+        this.iSelectAnswer = iSelectAnswer;
     }
 
     public String getiSkipFrom() {
